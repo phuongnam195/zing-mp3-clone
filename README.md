@@ -1,5 +1,5 @@
 # Zing MP3 clone
-## Team 13 - NMCNPM (Introduction to Software Technology)
+## Team 13 - Introduction to Software Technology course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## Technologies
 Flutter, Firebase
