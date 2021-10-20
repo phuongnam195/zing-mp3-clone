@@ -1,4 +1,4 @@
-# Zing MP3 clone (in process...)
+# Zing MP3 clone (in progress...)
 ## Team 13 - Introduction to Software Technology course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## Technologies
