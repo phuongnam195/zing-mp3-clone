@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/data/all_musics.dart';
 
 class ExplorerPage extends StatelessWidget {
-  final Function startToPlayMusic;
-
-  const ExplorerPage(this.startToPlayMusic, {Key? key}) : super(key: key);
+  const ExplorerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          child: ListTile(
-            leading: Image.network(
-                'https://avatar-ex-swe.nixcdn.com/song/2021/01/22/9/f/2/1/1611280898757_500.jpg'),
-            title: const Text('Hương'),
-            subtitle: const Text('Văn Mai Hương, Negav'),
-          ),
-          onTap: () => startToPlayMusic(),
-        ),
-        const Divider(
-          height: 0,
-        ),
-      ],
-    );
+    return FutureBuilder(
+        future: AllMusics.instance.fetchAndSetData(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Lỗi tải danh sách nhạc'));
+          }
+
+          final allMusics = AllMusics.instance.list;
+          return ListView.builder(
+            itemCount: allMusics.length,
+            itemBuilder: (ctx, index) {
+              final music = allMusics[index];
+              return Column(
+                children: [
+                  Text(music.id),
+                  Text(music.title),
+                  Text(music.artists),
+                  Image.network(
+                    music.imageUrl,
+                    width: 300,
+                    fit: BoxFit.cover,
+                  ),
+                  Text(music.audioUrl),
+                  Text(music.duration.toString()),
+                  const Divider(),
+                ],
+              );
+            },
+          );
+        });
   }
 }

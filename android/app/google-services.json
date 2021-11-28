@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "325598099193",
+    "project_id": "zingmp3clone-team13",
+    "storage_bucket": "zingmp3clone-team13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325598099193:android:f6028989e6f2d5dbc71428",
+        "android_client_info": {
+          "package_name": "com.example.zing_mp3_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325598099193-0pnud9e5vju32kqq5tdqm58t02pq7e1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBao-D-L7R3LuYsdgkYfcrJG7lRMvJIPHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325598099193-0pnud9e5vju32kqq5tdqm58t02pq7e1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

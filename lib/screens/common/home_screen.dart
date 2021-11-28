@@ -1,16 +1,23 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/pages/chart_page.dart';
 import 'package:zing_mp3_clone/pages/explorer_page.dart';
 import 'package:zing_mp3_clone/pages/personal_page.dart';
+import 'package:zing_mp3_clone/pages/radio_page.dart';
+import 'package:zing_mp3_clone/screens/common/account_screen.dart';
+import 'package:zing_mp3_clone/screens/common/search_screen.dart';
+import 'package:zing_mp3_clone/widgets/search/search_box.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
+
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   var _currentPageIndex = 1;
   final PageController _pageController = PageController(initialPage: 1);
   final AudioPlayer audioPlayer = AudioPlayer();
@@ -44,8 +51,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const searchBarHeight = 30.0;
-
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.white,
@@ -55,32 +60,18 @@ class _MainScreenState extends State<MainScreen> {
               color: Theme.of(context).primaryColor,
               size: 30,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AccountScreen.routeName);
+            },
           ),
-          centerTitle: true,
-          title: SizedBox(
-            height: searchBarHeight,
-            child: TextField(
-              autofocus: false,
-              textAlignVertical: TextAlignVertical.bottom,
-              cursorColor: Theme.of(context).primaryColor,
-              cursorWidth: 1.5,
-              decoration: InputDecoration(
-                hintText: 'Bài hát, playlist, nghệ sĩ...',
-                hintStyle: TextStyle(
-                  color: Theme.of(context).hintColor,
-                ),
-                prefixIcon:
-                    Icon(Icons.search, color: Theme.of(context).hintColor),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(searchBarHeight / 2),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
+          titleSpacing: 0,
+          title: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: SearchBox(
+                enabled: false,
+                onTap: () {
+                  Navigator.of(context).pushNamed(SearchScreen.routeName);
+                }),
           )),
       body: PageView(
         scrollDirection: Axis.horizontal,
@@ -90,15 +81,15 @@ class _MainScreenState extends State<MainScreen> {
             _currentPageIndex = index;
           });
         },
-        children: [
-          const PersonalPage(),
-          ExplorerPage(_startToPlayMusic),
+        children: const [
+          PersonalPage(),
+          ExplorerPage(),
+          ChartPage(),
+          RadioPage(),
         ],
       ),
       bottomNavigationBar: SizedBox(
-        height: _startedToPlay
-            ? kBottomNavigationBarHeight * 2
-            : kBottomNavigationBarHeight,
+        height: _startedToPlay ? 60 * 2 : 60,
         child: Column(
           children: [
             if (_startedToPlay)
@@ -136,13 +127,18 @@ class _MainScreenState extends State<MainScreen> {
               ),
             BottomNavigationBar(
               selectedItemColor: Theme.of(context).primaryColor,
+              unselectedItemColor: Colors.amber,
               currentIndex: _currentPageIndex,
               onTap: _switchPage,
               items: const [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.library_music_outlined), label: 'Cá nhân'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.album_outlined), label: 'Khám phá')
+                    icon: Icon(Icons.album_outlined), label: 'Khám phá'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.insights_rounded), label: 'Chart'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.radio), label: 'Radio'),
               ],
             ),
           ],
