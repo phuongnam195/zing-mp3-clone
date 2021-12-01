@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/widgets/auth/signup_card.dart';
+
+import '../../widgets/auth/signup_card.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = '/auth/signup';

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:zing_mp3_clone/models/playlist.dart';
+
+import '../models/playlist.dart';
 
 class AllPlaylists {
   static final AllPlaylists instance = AllPlaylists._internal();
