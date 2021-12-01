@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/screens/auth/login_screen.dart';
-import 'package:zing_mp3_clone/screens/common/home_screen.dart';
+
+import '../auth/login_screen.dart';
+import './home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const routeName = '/welcome';
@@ -9,6 +10,9 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ảnh nền: AssetImage('assets/images/auth/welcome_background.jpg')
+    // Answer thứ 2: https://stackoverflow.com/questions/54241753/background-image-for-scaffold
+
     return Scaffold(
       body: Column(
         children: [

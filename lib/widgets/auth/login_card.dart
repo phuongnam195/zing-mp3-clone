@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/config.dart';
-import 'package:zing_mp3_clone/models/account.dart';
-import 'package:zing_mp3_clone/screens/auth/forgot_screen.dart';
-import 'package:zing_mp3_clone/screens/auth/signup_screen.dart';
-import 'package:zing_mp3_clone/widgets/auth/auth_text_field.dart';
+
+import './auth_text_field.dart';
 
 class LoginCard extends StatefulWidget {
   const LoginCard(this._onSubmit, {Key? key}) : super(key: key);

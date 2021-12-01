@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
-    <application android:usesCleartextTraffic="true">
+    <application android:usesCleartextTraffic = "true">
     <!-- possibly other elements -->
     </application>
 </manifest>

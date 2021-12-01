@@ -1,43 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/data/all_musics.dart';
+import 'package:zing_mp3_clone/controller/player_controller.dart';
+import 'package:zing_mp3_clone/data/all_playlists.dart';
+import 'package:zing_mp3_clone/screens/common/playlist_screen.dart';
+import 'package:zing_mp3_clone/widgets/explorer/explorer_playlist_card.dart';
 
 class ExplorerPage extends StatelessWidget {
   const ExplorerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: AllMusics.instance.fetchAndSetData(),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Lỗi tải danh sách nhạc'));
-          }
+    var allPlaylists = AllPlaylists.instance.list;
 
-          final allMusics = AllMusics.instance.list;
-          return ListView.builder(
-            itemCount: allMusics.length,
-            itemBuilder: (ctx, index) {
-              final music = allMusics[index];
-              return Column(
-                children: [
-                  Text(music.id),
-                  Text(music.title),
-                  Text(music.artists),
-                  Image.network(
-                    music.imageUrl,
-                    width: 300,
-                    fit: BoxFit.cover,
-                  ),
-                  Text(music.audioUrl),
-                  Text(music.duration.toString()),
-                  const Divider(),
-                ],
-              );
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.92,
+      ),
+      itemCount: allPlaylists.length,
+      itemBuilder: (ctx, index) {
+        final playlist = allPlaylists[index];
+        return Center(
+          child: ExplorerPlaylistCard(
+            title: playlist.title,
+            thumbnailUrl: playlist.imageUrl!,
+            onTap: () {
+              Navigator.of(context).pushNamed(PlaylistScreen.routeName);
             },
-          );
-        });
+          ),
+        );
+      },
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+    );
   }
 }

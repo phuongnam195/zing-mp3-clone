@@ -1,12 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/pages/chart_page.dart';
-import 'package:zing_mp3_clone/pages/explorer_page.dart';
-import 'package:zing_mp3_clone/pages/personal_page.dart';
-import 'package:zing_mp3_clone/pages/radio_page.dart';
-import 'package:zing_mp3_clone/screens/common/account_screen.dart';
-import 'package:zing_mp3_clone/screens/common/search_screen.dart';
-import 'package:zing_mp3_clone/widgets/search/search_box.dart';
+import 'package:zing_mp3_clone/config.dart';
+
+import '../../controller/player_controller.dart';
+import '../../pages/chart_page.dart';
+import '../../pages/explorer_page.dart';
+import '../../pages/personal_page.dart';
+import '../../pages/radio_page.dart';
+import '../auth/login_screen.dart';
+import './account_screen.dart';
+import './search_screen.dart';
+import '../../widgets/common/playing_control_bar.dart';
+import '../../widgets/search/search_box.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -20,9 +24,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var _currentPageIndex = 1;
   final PageController _pageController = PageController(initialPage: 1);
-  final AudioPlayer audioPlayer = AudioPlayer();
-  bool _startedToPlay = false;
-  bool _isPlaying = false;
+
+  final PlayerController playerController = PlayerController.instance;
 
   void _switchPage(int index) {
     setState(() {
@@ -31,29 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController.jumpToPage(index);
   }
 
-  void _startToPlayMusic() {
-    if (_startedToPlay) {
-      return;
-    }
-    audioPlayer.play(
-        'https://c1-ex-swe.nixcdn.com/NhacCuaTui1010/Huong-VanMaiHuongNegav-6927340.mp3?st=izwmKajfcKzjI5rfxSV-HQ&e=1633870096');
-    setState(() {
-      _startedToPlay = true;
-      _isPlaying = true;
-    });
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.release();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           leading: IconButton(
             icon: Icon(
               Icons.account_circle_outlined,
@@ -61,7 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
               size: 30,
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed(AccountScreen.routeName);
+              if (Config.instance.myAccount != null) {
+                Navigator.of(context).pushNamed(AccountScreen.routeName);
+              } else {
+                Navigator.of(context).pushNamed(LoginScreen.routeName);
+              }
             },
           ),
           titleSpacing: 0,
@@ -88,62 +78,37 @@ class _HomeScreenState extends State<HomeScreen> {
           RadioPage(),
         ],
       ),
-      bottomNavigationBar: SizedBox(
-        height: _startedToPlay ? 60 * 2 : 60,
-        child: Column(
-          children: [
-            if (_startedToPlay)
-              Container(
-                color: Colors.green[100],
-                height: kBottomNavigationBarHeight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                      onPressed: () {
-                        if (_isPlaying) {
-                          audioPlayer.pause();
-                        } else {
-                          audioPlayer.resume();
-                        }
-                        setState(() {
-                          _isPlaying = !_isPlaying;
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.stop),
-                      onPressed: () {
-                        audioPlayer.stop();
-                        setState(() {
-                          _isPlaying = false;
-                          _startedToPlay = false;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+      bottomNavigationBar: StreamBuilder<void>(
+          stream: PlayerController.instance.onChange,
+          builder: (context, snapshot) {
+            return SizedBox(
+              height: playerController.isActive ? 60 * 2 : 60,
+              child: Column(
+                children: [
+                  if (playerController.isActive) const PlayingControlBar(),
+                  BottomNavigationBar(
+                    selectedItemColor: Theme.of(context).primaryColor,
+                    unselectedItemColor: Theme.of(context).hintColor,
+                    selectedLabelStyle:
+                        const TextStyle(fontWeight: FontWeight.w600),
+                    currentIndex: _currentPageIndex,
+                    onTap: _switchPage,
+                    items: const [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.library_music_outlined),
+                          label: 'Cá nhân'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.album_outlined), label: 'Khám phá'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.insights_rounded), label: 'Chart'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.radio), label: 'Radio'),
+                    ],
+                  ),
+                ],
               ),
-            BottomNavigationBar(
-              selectedItemColor: Theme.of(context).primaryColor,
-              unselectedItemColor: Colors.amber,
-              currentIndex: _currentPageIndex,
-              onTap: _switchPage,
-              items: const [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.library_music_outlined), label: 'Cá nhân'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.album_outlined), label: 'Khám phá'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.insights_rounded), label: 'Chart'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.radio), label: 'Radio'),
-              ],
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 }

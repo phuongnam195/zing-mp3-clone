@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/screens/common/welcome_screen.dart';
+
+import '../../config.dart';
+import './welcome_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   static const routeName = '/account';
@@ -21,6 +23,7 @@ class AccountScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Text(Config.instance.myAccount!.name),
           ElevatedButton(
               onPressed: () {
                 Navigator.of(context)

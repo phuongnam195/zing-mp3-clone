@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:zing_mp3_clone/data/all_musics.dart';
+import 'package:zing_mp3_clone/models/music.dart';
+
 class Playlist {
   final String id;
-  final String title;
+  String title;
   String? imageUrl;
   final List<String> musicIDs;
 
@@ -22,5 +27,25 @@ class Playlist {
       imageUrl: map['imageUrl'],
       musicIDs: musics,
     );
+  }
+
+  Map get toMap => {
+        'id': id,
+        'title': title,
+        'imageUrl': imageUrl,
+        'musicIDs': jsonEncode(musicIDs),
+      }..removeWhere((_, value) => value == null);
+
+  Future<List<Music>> getMusicList() async {
+    List<Music> result = [];
+    for (var musicId in musicIDs) {
+      result.add(AllMusics.instance.getByID(musicId));
+    }
+    return result;
+  }
+
+  Music getMusicAtIndex(int index) {
+    final musicId = musicIDs[index];
+    return AllMusics.instance.getByID(musicId);
   }
 }

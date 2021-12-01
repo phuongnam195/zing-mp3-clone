@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/config.dart';
-import 'package:zing_mp3_clone/models/account.dart';
-import 'package:zing_mp3_clone/models/playlist.dart';
-import 'package:zing_mp3_clone/screens/auth/forgot_screen.dart';
-import 'package:zing_mp3_clone/screens/auth/signup_screen.dart';
-import 'package:zing_mp3_clone/screens/common/home_screen.dart';
-import 'package:zing_mp3_clone/utils/my_dialog.dart';
-import 'package:zing_mp3_clone/utils/my_exception.dart';
-import 'package:zing_mp3_clone/utils/validator.dart';
-import 'package:zing_mp3_clone/widgets/auth/login_card.dart';
+
+import '../../config.dart';
+import '../../models/account.dart';
+import '../../models/playlist.dart';
+import '../../utils/my_dialog.dart';
+import '../../utils/my_exception.dart';
+import '../../utils/validator.dart';
+import '../../widgets/auth/login_card.dart';
+import '../common/home_screen.dart';
+import './forgot_screen.dart';
+import './signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/auth/login';
@@ -69,8 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
           uid: user.uid,
           name: map['name'],
           email: email,
-          favorites: favorites,
           userPlaylists: userPlaylists);
+
+      await Config.instance.saveAccountInfo();
+      await Config.instance.saveAccountPlaylists();
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       return true;
