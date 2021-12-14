@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import '../../utils/converter.dart';
 
 import '../../controller/player_controller.dart';
 
@@ -133,7 +134,8 @@ class _PlayingScreenState extends State<PlayingScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: SingleChildScrollView(
                             child: Text(
-                              playingMusic.lyrics,
+                              playingMusic.lyrics ??
+                                  'Lời bài hát đang cập nhật!',
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18),
                             ),
@@ -146,71 +148,99 @@ class _PlayingScreenState extends State<PlayingScreen> {
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, bottom: 45),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton(
-                          iconSize: 26,
-                          icon: Icon(
-                            Icons.shuffle_rounded,
-                            color: controller.isShuffleMode
-                                ? activeColor
-                                : Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              controller.toggleShuffle();
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.skip_previous_rounded),
-                          iconSize: 34,
-                          color: Colors.white,
-                          onPressed: () {
-                            controller.playPrevious();
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(controller.state == PlayerState.PLAYING
-                              ? Icons.pause_circle_outline_rounded
-                              : Icons.play_circle_outline_rounded),
-                          iconSize: 75,
-                          color: Colors.white,
-                          onPressed: () {
-                            setState(() {
-                              controller.togglePlay();
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.skip_next_rounded,
-                          ),
-                          iconSize: 34,
-                          color: Colors.white,
-                          onPressed: () {
-                            controller.playNext();
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            controller.repeatMode == RepeatMode.off
-                                ? Icons.repeat_rounded
-                                : (controller.repeatMode == RepeatMode.one
-                                    ? Icons.repeat_one_rounded
-                                    : Icons.repeat_rounded),
-                          ),
-                          iconSize: 26,
-                          color: controller.repeatMode == RepeatMode.off
-                              ? Colors.white
-                              : activeColor,
-                          onPressed: () {
-                            setState(() {
-                              controller.toggleRepeat();
-                            });
-                          },
+                        StreamBuilder<Duration>(
+                            stream: controller.onPositionChanged,
+                            builder: (context, snapshot) {
+                              double position = 0;
+                              if (snapshot.hasData) {
+                                position = snapshot.data!.inSeconds.toDouble();
+                              }
+                              return Slider(
+                                value: position,
+                                onChangeEnd: (value) {
+                                  controller.setPosition(value.toInt());
+                                },
+                                divisions: playingMusic.duration,
+                                label:
+                                    Converter.formatSecond(position.toInt()) +
+                                        ' / ' +
+                                        Converter.formatSecond(
+                                            playingMusic.duration),
+                                max: playingMusic.duration.toDouble(),
+                                onChanged: (value) {},
+                                activeColor: Theme.of(context).primaryColor,
+                              );
+                            }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              iconSize: 26,
+                              icon: Icon(
+                                Icons.shuffle_rounded,
+                                color: controller.isShuffleMode
+                                    ? activeColor
+                                    : Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  controller.toggleShuffle();
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_previous_rounded),
+                              iconSize: 34,
+                              color: Colors.white,
+                              onPressed: () {
+                                controller.playPrevious();
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(controller.state == PlayerState.PLAYING
+                                  ? Icons.pause_circle_outline_rounded
+                                  : Icons.play_circle_outline_rounded),
+                              iconSize: 75,
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  controller.togglePlay();
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.skip_next_rounded,
+                              ),
+                              iconSize: 34,
+                              color: Colors.white,
+                              onPressed: () {
+                                controller.playNext();
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                controller.repeatMode == RepeatMode.off
+                                    ? Icons.repeat_rounded
+                                    : (controller.repeatMode == RepeatMode.one
+                                        ? Icons.repeat_one_rounded
+                                        : Icons.repeat_rounded),
+                              ),
+                              iconSize: 26,
+                              color: controller.repeatMode == RepeatMode.off
+                                  ? Colors.white
+                                  : activeColor,
+                              onPressed: () {
+                                setState(() {
+                                  controller.toggleRepeat();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -4,12 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './models/account.dart';
 import './models/playlist.dart';
+import 'models/music.dart';
 
 class Config {
   static final Config instance = Config._internal();
   Config._internal();
 
   Account? myAccount;
+
+  List<Music> downloadedMusics = [];
 
   // Lưu thông tin tài khoản hiện hành
   Future<void> saveAccountInfo() async {

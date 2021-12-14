@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import '../models/playing_log.dart';
 
-class AllPlayingLogs extends ChangeNotifier {
+class PlayingLogsProvider {
+  static final PlayingLogsProvider instance = PlayingLogsProvider._internal();
+  PlayingLogsProvider._internal();
+
   List<PlayingLog> _list = [];
 
   List<PlayingLog> get list => [..._list];
@@ -38,7 +40,9 @@ class AllPlayingLogs extends ChangeNotifier {
             PlayingLog.fromMap(docChange.doc.data()!, docChange.doc.id);
         _list.add(newLog);
       }
-      notifyListeners();
+      if (querySnapshot.docChanges.isNotEmpty) {
+        // notifyListeners();
+      }
     });
   }
 }

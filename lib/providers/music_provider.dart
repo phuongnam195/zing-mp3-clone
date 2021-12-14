@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/music.dart';
 
-class AllMusics {
-  static final AllMusics instance = AllMusics._internal();
-  AllMusics._internal();
+class MusicProvider {
+  static final MusicProvider instance = MusicProvider._internal();
+  MusicProvider._internal();
 
-  List<Music> _list = [];
+  final List<Music> _list = [];
 
   List<Music> get list => [..._list];
   Music getByID(String id) => _list.firstWhere((music) => music.id == id);
@@ -20,8 +20,13 @@ class AllMusics {
 
       _list.clear();
       for (var qds in queryDocumentSnapshots) {
-        final music = Music.fromMap(qds.data(), qds.id);
-        _list.add(music);
+        try {
+          final music = Music.fromMap(qds.data(), qds.id);
+          _list.add(music);
+        } catch (error) {
+          print('<<Exception-AllMusics-fetchAndSetData-${qds.id}>>' +
+              error.toString());
+        }
       }
     } catch (error) {
       print('<<Exception-AllMusics-fetchAndSetData>> ' + error.toString());
@@ -40,5 +45,10 @@ class AllMusics {
       }
     }
     return result;
+  }
+
+  List<Music> getSorted() {
+    // TODO: Sắp xếp giảm dần dùng playing_log
+    return list;
   }
 }

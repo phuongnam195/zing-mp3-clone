@@ -39,9 +39,10 @@ dependencies:
   firebase_core: "^1.10.0"
   firebase_auth: "^3.2.0"
   cloud_firestore: "^3.1.0"
-  provider: ^6.0.1
   cached_network_image: ^3.1.0+1
   shared_preferences: ^2.0.9
+  flutter_downloader: ^1.7.1
+  sqflite: ^2.0.1
 
 dev_dependencies:
   flutter_test:

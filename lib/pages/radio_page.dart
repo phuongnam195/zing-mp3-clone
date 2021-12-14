@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../controller/player_controller.dart';
-import '../data/all_musics.dart';
+import '../providers/music_provider.dart';
 import '../widgets/common/music_card.dart';
 
 class RadioPage extends StatelessWidget {
@@ -9,7 +9,7 @@ class RadioPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final allMusics = AllMusics.instance.list;
+    final allMusics = MusicProvider.instance.list;
     return ListView.builder(
       itemCount: allMusics.length,
       itemBuilder: (ctx, index) {

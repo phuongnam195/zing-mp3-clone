@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/recent_searchs.dart';
+import '../../providers/recent_searchs.dart';
 import '../../models/music.dart';
 import '../../widgets/search/search_box.dart';
 
@@ -11,7 +11,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recentSearchs = RecentSearchs.instance;
+    final recentSearchs = RecentSearchProvider.instance;
 
     // TODO: Hiện danh sách này lên body
     // Danh sách các bài hát tìm kiếm gần đây

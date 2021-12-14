@@ -6,7 +6,7 @@ class Music {
   final String thumbnailUrl;
   final String audioUrl;
   final int duration;
-  final String lyrics;
+  String? lyrics;
 
   Music({
     required this.id,
@@ -16,10 +16,18 @@ class Music {
     required this.thumbnailUrl,
     required this.audioUrl,
     required this.duration,
-    required this.lyrics,
+    this.lyrics,
   });
 
   factory Music.fromMap(Map<String, dynamic> map, String id) {
+    if (id == '0JFGwaKDUU5zN6co8zoH') {
+      var x = 3;
+    }
+    String? lyrics = map['lyrics'];
+    if (lyrics != null) {
+      lyrics = lyrics.replaceAll('\\n', '\n');
+    }
+
     return Music(
       id: id,
       title: map['title'],
@@ -28,7 +36,22 @@ class Music {
       thumbnailUrl: map['thumbnailUrl'],
       audioUrl: map['audioUrl'],
       duration: map['duration'],
-      lyrics: map['lyrics'].replaceAll('\\n', '\n'),
+      lyrics: lyrics,
     );
+  }
+
+  Map<String, Object> toMap() {
+    var map = {
+      'title': title,
+      'artists': artists,
+      'imageUrl': imageUrl,
+      'thumbnailUrl': thumbnailUrl,
+      'audioUrl': audioUrl,
+      'duration': duration,
+    };
+    if (lyrics != null) {
+      map['lyrics'] = lyrics!;
+    }
+    return map;
   }
 }

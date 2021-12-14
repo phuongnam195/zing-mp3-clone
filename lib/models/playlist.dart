@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:zing_mp3_clone/data/all_musics.dart';
+import 'package:zing_mp3_clone/providers/music_provider.dart';
 import 'package:zing_mp3_clone/models/music.dart';
 
 class Playlist {
@@ -39,13 +39,13 @@ class Playlist {
   Future<List<Music>> getMusicList() async {
     List<Music> result = [];
     for (var musicId in musicIDs) {
-      result.add(AllMusics.instance.getByID(musicId));
+      result.add(MusicProvider.instance.getByID(musicId));
     }
     return result;
   }
 
   Music getMusicAtIndex(int index) {
     final musicId = musicIDs[index];
-    return AllMusics.instance.getByID(musicId);
+    return MusicProvider.instance.getByID(musicId);
   }
 }

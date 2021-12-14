@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/playlist.dart';
 
-class AllPlaylists {
-  static final AllPlaylists instance = AllPlaylists._internal();
-  AllPlaylists._internal();
+class PlaylistProvider {
+  static final PlaylistProvider instance = PlaylistProvider._internal();
+  PlaylistProvider._internal();
 
   List<Playlist> _list = [];
 

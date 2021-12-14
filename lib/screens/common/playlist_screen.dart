@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../controller/player_controller.dart';
-import '../../data/all_playlists.dart';
+import '../../providers/playlist_provider.dart';
 import '../../models/music.dart';
 import '../../models/playlist.dart';
 
@@ -15,7 +15,7 @@ class PlaylistScreen extends StatelessWidget {
     final playerController = PlayerController.instance;
 
     // Dữ liệu giả
-    final Playlist playlist = AllPlaylists.instance.list[0];
+    final Playlist playlist = PlaylistProvider.instance.list[0];
     final String title = playlist.title;
     final int numberOfMusic = playlist.musicIDs.length;
     final String backgroundImageUrl = playlist.getMusicAtIndex(0).thumbnailUrl;

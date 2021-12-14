@@ -13,6 +13,7 @@ class ExplorerPlaylistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final fakeTitle = title + '\n'; // mục đích: minLines = 2
 
     return InkWell(
       onTap: onTap,
@@ -34,7 +35,7 @@ class ExplorerPlaylistCard extends StatelessWidget {
           SizedBox(
             width: screenWidth / 2.6,
             child: Text(
-              title,
+              fakeTitle,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

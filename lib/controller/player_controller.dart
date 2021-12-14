@@ -15,7 +15,7 @@ class PlayerController {
   PlayerController._internal() {
     _audioPlayer = AudioPlayer();
     _audioPlayer.onPlayerCompletion.listen((event) {
-      playNext();
+      playNext(true);
       notifyChange();
     });
   }
@@ -49,9 +49,13 @@ class PlayerController {
     return _musicList[_currentIndex];
   }
 
+  Stream<Duration> get onPositionChanged => _audioPlayer.onAudioPositionChanged;
   bool get isActive => state != PlayerState.STOPPED;
-
   Stream<void> get onChange => _changesController.stream;
+
+  void setPosition(int position) {
+    _audioPlayer.seek(Duration(seconds: position));
+  }
 
   // Khi chọn một bài hát đơn lẻ (từ kết quả tìm kiếm)
   void setMusic(Music music) {
@@ -62,6 +66,7 @@ class PlayerController {
     _currentIndex = 0;
 
     _play(music);
+    notifyChange();
   }
 
   // Khi chọn một bài hát bất kì của một playlist
@@ -89,6 +94,17 @@ class PlayerController {
     final initMusic = playlist.getMusicAtIndex(_currentIndex);
     _play(initMusic);
     isShuffleMode = true;
+  }
+
+  // Khi chọn một bài hát bất kì của một playlist
+  void setMusicList(List<Music> musicList, int index) {
+    _musicList = [...musicList];
+    _playedIndexes.clear();
+
+    _currentIndex = index;
+
+    final initMusic = musicList[index];
+    _play(initMusic);
   }
 
   void _play(Music music) {
@@ -121,20 +137,39 @@ class PlayerController {
     }
   }
 
-  void playNext() {
-    if (_musicList.length == 1) {
-      return;
-    }
-
+  // passive = true: playNext được thực hiện khi bài hát kết thúc (bị động)
+  // passive = false: playNext được thực hiện khi người dùng ấn nút NEXT (chủ động)
+  void playNext([bool passive = false]) {
     _playedIndexes.add(_currentIndex);
 
     switch (repeatMode) {
+      // Nếu không bật REPEAT
       case RepeatMode.off:
-        if (_playedIndexes.length == _musicList.length) {
+        // và nếu bài nào cũng đã được phát, trong điều kiện bài hát tự hết
+        if (_playedIndexes.toSet().length == _musicList.length && passive) {
+          // thì dừng phát
           state = PlayerState.STOPPED;
-          notifyChange();
-          return;
-        } else {
+        }
+        // ngược lại thì phát bài tiếp theo: random hoặc next
+        else {
+          _currentIndex = isShuffleMode
+              ? _getNextRandomIndex()
+              : ((_currentIndex + 1) % _musicList.length);
+          _play(_musicList[_currentIndex]);
+        }
+        notifyChange();
+        break;
+
+      // Nếu bật REPEAT 1 bài
+      case RepeatMode.one:
+        // và bài hát tự hết
+        if (passive) {
+          // thì phát lại bài đó
+          _play(_musicList[_currentIndex]);
+        }
+        // do người dùng click
+        else {
+          // thì phát bài tiếp theo: random hoặc next
           _currentIndex = isShuffleMode
               ? _getNextRandomIndex()
               : ((_currentIndex + 1) % _musicList.length);
@@ -142,10 +177,10 @@ class PlayerController {
           notifyChange();
         }
         break;
-      case RepeatMode.one:
-        _play(_musicList[_currentIndex]);
-        break;
+
+      // Nếu bật REPEAT cả danh sách
       case RepeatMode.all:
+        // thì phát bài tiếp theo: random hoặc next
         _currentIndex = isShuffleMode
             ? _getNextRandomIndex()
             : ((_currentIndex + 1) % _musicList.length);
@@ -172,7 +207,7 @@ class PlayerController {
   int _getNextRandomIndex() {
     List<int> pool = [for (var i = 0; i < _musicList.length; i++) i];
     for (int i = _playedIndexes.length - 1;
-        i >= max(0, _playedIndexes.length - _musicList.length);
+        i >= max(0, _playedIndexes.length - _musicList.length + 1);
         i--) {
       pool.remove(_playedIndexes[i]);
     }
