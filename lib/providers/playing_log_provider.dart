@@ -1,21 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zing_mp3_clone/models/account.dart';
+
+import '../config.dart';
 import '../models/playing_log.dart';
 
-class PlayingLogsProvider {
-  static final PlayingLogsProvider instance = PlayingLogsProvider._internal();
-  PlayingLogsProvider._internal();
+class PlayingLogProvider {
+  static final PlayingLogProvider instance = PlayingLogProvider._internal();
+  PlayingLogProvider._internal();
 
   List<PlayingLog> _list = [];
 
   List<PlayingLog> get list => [..._list];
 
-  Future<void> fetchAndSetData() async {
-    final firestore = FirebaseFirestore.instance;
+  final collection = FirebaseFirestore.instance.collection('playing_logs');
 
+  Future<void> fetchAndSetData() async {
     try {
-      final querySnapshot =
-          await firestore.collection('playing_logs').orderBy('datetime').get();
+      final querySnapshot = await collection.orderBy('datetime').get();
       final queryDocumentSnapshots = querySnapshot.docs;
 
       _list.clear();
@@ -44,5 +47,14 @@ class PlayingLogsProvider {
         // notifyListeners();
       }
     });
+  }
+
+  void addNewLog(String musicId) {
+    Map<String, dynamic> map = {
+      'musicID': musicId,
+      'listenerUID': Config.instance.myAccount?.uid ?? '',
+      'datetime': Timestamp.now(),
+    };
+    collection.add(map);
   }
 }

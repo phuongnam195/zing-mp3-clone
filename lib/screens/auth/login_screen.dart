@@ -35,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
       if (Validator.email(email) == false) {
         throw MyException('Email không hợp lệ.');
       }
-      if (password.length < 4) {
-        throw MyException('Mật khẩu phải ít nhất 4 ký tự.');
+      if (password.length < 6) {
+        throw MyException('Mật khẩu phải ít nhất 6 ký tự.');
       }
       final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,

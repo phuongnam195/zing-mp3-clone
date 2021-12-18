@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../providers/recent_searchs.dart';
+import '../../providers/recent_search_provider.dart';
 import '../../models/music.dart';
 import '../../widgets/search/search_box.dart';
 

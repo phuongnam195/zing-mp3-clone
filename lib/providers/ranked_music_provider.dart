@@ -20,7 +20,7 @@ class RankedMusicProvider {
   List<RankedMusic> totalRanks = [];
 
   Future<void> process() async {
-    final logs = PlayingLogsProvider.instance.list;
+    final logs = PlayingLogProvider.instance.list;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'providers/ranked_musics.dart';
+import 'providers/ranked_music_provider.dart';
 import 'providers/music_provider.dart';
 import 'providers/playlist_provider.dart';
-import './providers/recent_searchs.dart';
+import 'providers/recent_search_provider.dart';
 import 'providers/playing_log_provider.dart';
 import './screens/common/account_screen.dart';
 import './screens/auth/forgot_screen.dart';
@@ -25,7 +25,7 @@ void main() async {
   await Firebase.initializeApp();
   await MusicProvider.instance.fetchAndSetData();
   await PlaylistProvider.instance.fetchAndSetData();
-  await PlayingLogsProvider.instance.fetchAndSetData();
+  await PlayingLogProvider.instance.fetchAndSetData();
   await RankedMusicProvider.instance.process();
   if (FirebaseAuth.instance.currentUser != null) {
     await Config.instance.loadAccountData();

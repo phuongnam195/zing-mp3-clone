@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zing_mp3_clone/controller/player_controller.dart';
 import '../../providers/music_provider.dart';
-import '../../providers/ranked_musics.dart';
+import '../../providers/ranked_music_provider.dart';
 import '../../models/music.dart';
 import '../common/ranked_music_card.dart';
 

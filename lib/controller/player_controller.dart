@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/providers/playing_log_provider.dart';
 
 import '../models/music.dart';
 import '../models/playlist.dart';
@@ -110,6 +112,7 @@ class PlayerController {
   void _play(Music music) {
     _audioPlayer.play(music.audioUrl);
     state = PlayerState.PLAYING;
+    PlayingLogProvider.instance.addNewLog(music.id);
   }
 
   void togglePlay() {
