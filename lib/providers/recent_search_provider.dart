@@ -16,9 +16,12 @@ class RecentSearchProvider {
 
   // Thêm một bài hát vừa tìm kiếm (tối đa 5)
   void add(String musicID) {
-    _recentSearchMusicIDs.add(musicID);
+    if (_recentSearchMusicIDs.contains(musicID)) {
+      _recentSearchMusicIDs.remove(musicID);
+    }
+    _recentSearchMusicIDs.insert(0, musicID);
     if (_recentSearchMusicIDs.length > 5) {
-      _recentSearchMusicIDs.removeAt(0);
+      _recentSearchMusicIDs.removeLast();
     }
     save();
   }
@@ -26,9 +29,7 @@ class RecentSearchProvider {
   // Lưu danh sách tìm kiếm gần đây
   Future<void> save() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _recentSearchMusicIDs.clear();
-    _recentSearchMusicIDs =
-        prefs.getStringList('recent_search_music_ids') ?? [];
+    prefs.setStringList('recent_search_music_ids', _recentSearchMusicIDs);
   }
 
   // Nạp danh sách tìm kiếm gần đây
