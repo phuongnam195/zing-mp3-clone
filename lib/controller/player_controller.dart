@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/providers/playing_log_provider.dart';
 
+import '../providers/playing_log_provider.dart';
 import '../models/music.dart';
 import '../models/playlist.dart';
 import '../screens/common/playing_screen.dart';
@@ -18,13 +17,13 @@ class PlayerController {
     _audioPlayer = AudioPlayer();
     _audioPlayer.onPlayerCompletion.listen((event) {
       playNext(true);
-      notifyChange();
+      notifyMusicChange();
     });
   }
 
   late final AudioPlayer _audioPlayer;
   final _rng = Random();
-  final StreamController<void> _changesController =
+  final StreamController<void> _musicChangeController =
       StreamController<void>.broadcast();
 
   // Danh sách bài hát đang phát
@@ -53,7 +52,7 @@ class PlayerController {
 
   Stream<Duration> get onPositionChanged => _audioPlayer.onAudioPositionChanged;
   bool get isActive => state != PlayerState.STOPPED;
-  Stream<void> get onChange => _changesController.stream;
+  Stream<void> get onMusicChanged => _musicChangeController.stream;
 
   void setPosition(int position) {
     _audioPlayer.seek(Duration(seconds: position));
@@ -68,7 +67,7 @@ class PlayerController {
     _currentIndex = 0;
 
     _play(music);
-    notifyChange();
+    notifyMusicChange();
   }
 
   // Khi chọn một bài hát bất kì của một playlist
@@ -82,6 +81,7 @@ class PlayerController {
 
     final initMusic = playlist.getMusicAtIndex(index);
     _play(initMusic);
+    notifyMusicChange();
   }
 
   // Khi ấn "PHÁT NGẪU NHIÊN" một playlist
@@ -96,6 +96,7 @@ class PlayerController {
     final initMusic = playlist.getMusicAtIndex(_currentIndex);
     _play(initMusic);
     isShuffleMode = true;
+    notifyMusicChange();
   }
 
   // Khi chọn một bài hát bất kì của một playlist
@@ -123,7 +124,7 @@ class PlayerController {
       _audioPlayer.resume();
       state = PlayerState.PLAYING;
     }
-    notifyChange();
+    notifyMusicChange();
   }
 
   void toggleShuffle() {
@@ -160,7 +161,7 @@ class PlayerController {
               : ((_currentIndex + 1) % _musicList.length);
           _play(_musicList[_currentIndex]);
         }
-        notifyChange();
+        notifyMusicChange();
         break;
 
       // Nếu bật REPEAT 1 bài
@@ -177,7 +178,7 @@ class PlayerController {
               ? _getNextRandomIndex()
               : ((_currentIndex + 1) % _musicList.length);
           _play(_musicList[_currentIndex]);
-          notifyChange();
+          notifyMusicChange();
         }
         break;
 
@@ -188,7 +189,7 @@ class PlayerController {
             ? _getNextRandomIndex()
             : ((_currentIndex + 1) % _musicList.length);
         _play(_musicList[_currentIndex]);
-        notifyChange();
+        notifyMusicChange();
         break;
     }
   }
@@ -203,7 +204,7 @@ class PlayerController {
       _currentIndex = _playedIndexes.last;
       _playedIndexes.removeLast();
       _play(_musicList[_currentIndex]);
-      notifyChange();
+      notifyMusicChange();
     }
   }
 
@@ -235,7 +236,7 @@ class PlayerController {
     ));
   }
 
-  void notifyChange() {
-    _changesController.add(null);
+  void notifyMusicChange() {
+    _musicChangeController.add(null);
   }
 }

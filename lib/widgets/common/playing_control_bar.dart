@@ -20,7 +20,7 @@ class PlayingControlBar extends StatelessWidget {
             playerController.maximizeScreen(context);
           },
           child: StreamBuilder<void>(
-              stream: playerController.onChange,
+              stream: playerController.onMusicChanged,
               builder: (ctx, snapshot) {
                 final playingMusic = playerController.current;
                 final isPlaying = playerController.state == PlayerState.PLAYING;

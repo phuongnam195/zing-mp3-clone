@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../providers/playlist_provider.dart';
 import '../screens/common/playlist_screen.dart';
 import '../widgets/explorer/explorer_playlist_card.dart';
@@ -59,7 +60,10 @@ class ExplorerPage extends StatelessWidget {
                       thumbnailUrl: playlist.imageUrl!,
                       onTap: () {
                         Navigator.of(context)
-                            .pushNamed(PlaylistScreen.routeName);
+                            .pushNamed(PlaylistScreen.routeName, arguments: {
+                          'type': 'ExplorerPlaylist',
+                          'id': playlist.id
+                        });
                       },
                     ),
                   );

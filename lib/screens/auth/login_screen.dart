@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../admin/admin_screen.dart';
 import '../../config.dart';
 import '../../models/account.dart';
 import '../../models/playlist.dart';
@@ -31,6 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
       _isSubmitting = true;
     });
 
+    if (email == 'admin' && password == '000000') {
+      Navigator.of(context).pushReplacementNamed(AdminScreen.routeName);
+      return true;
+    }
+
     try {
       if (Validator.email(email) == false) {
         throw MyException('Email không hợp lệ.');
@@ -57,18 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
       final mapPlaylist = querySnapshot.docs;
       List<Playlist> userPlaylists = [];
       for (var query in mapPlaylist) {
-        final playlist = Playlist.fromMap(query.data(), query.id);
+        final playlist = Playlist.fromMapFirebase(query.data(), query.id);
         userPlaylists.add(playlist);
-      }
-
-      List<String> favorites = [];
-      for (var item in map!['favoriteMusics']) {
-        favorites.add(item as String);
       }
 
       Config.instance.myAccount = Account(
           uid: user.uid,
-          name: map['name'],
+          name: map!['name'],
           email: email,
           userPlaylists: userPlaylists);
 
@@ -105,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,

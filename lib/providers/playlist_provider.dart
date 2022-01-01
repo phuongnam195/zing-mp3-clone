@@ -6,9 +6,11 @@ class PlaylistProvider {
   static final PlaylistProvider instance = PlaylistProvider._internal();
   PlaylistProvider._internal();
 
-  List<Playlist> _list = [];
+  final List<Playlist> _list = [];
 
   List<Playlist> get list => [..._list];
+  Playlist getByID(String id) =>
+      _list.firstWhere((playlist) => playlist.id == id);
 
   Future<void> fetchAndSetData() async {
     final firestore = FirebaseFirestore.instance;
@@ -19,7 +21,7 @@ class PlaylistProvider {
 
       _list.clear();
       for (var qds in queryDocumentSnapshots) {
-        final playlist = Playlist.fromMap(qds.data(), qds.id);
+        final playlist = Playlist.fromMapFirebase(qds.data(), qds.id);
         _list.add(playlist);
       }
     } catch (error) {

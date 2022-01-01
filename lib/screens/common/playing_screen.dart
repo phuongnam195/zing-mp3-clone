@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import '../../utils/converter.dart';
 
+import '../../widgets/playing/seekbar.dart';
 import '../../controller/player_controller.dart';
 
 class PlayingScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
 
     return Scaffold(
       body: StreamBuilder<void>(
-          stream: controller.onChange,
+          stream: controller.onMusicChanged,
           builder: (context, snapshot) {
             final playingMusic = controller.current!;
 
@@ -151,29 +151,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        StreamBuilder<Duration>(
-                            stream: controller.onPositionChanged,
-                            builder: (context, snapshot) {
-                              double position = 0;
-                              if (snapshot.hasData) {
-                                position = snapshot.data!.inSeconds.toDouble();
-                              }
-                              return Slider(
-                                value: position,
-                                onChangeEnd: (value) {
-                                  controller.setPosition(value.toInt());
-                                },
-                                divisions: playingMusic.duration,
-                                label:
-                                    Converter.formatSecond(position.toInt()) +
-                                        ' / ' +
-                                        Converter.formatSecond(
-                                            playingMusic.duration),
-                                max: playingMusic.duration.toDouble(),
-                                onChanged: (value) {},
-                                activeColor: Theme.of(context).primaryColor,
-                              );
-                            }),
+                        const SeekBar(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,

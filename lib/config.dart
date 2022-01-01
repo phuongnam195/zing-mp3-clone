@@ -26,7 +26,7 @@ class Config {
   Future<void> saveAccountPlaylists() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final listStringMap =
-        myAccount!.userPlaylists.map((e) => jsonEncode(e.toMap)).toList();
+        myAccount!.userPlaylists.map((e) => jsonEncode(e.toMap())).toList();
     await prefs.setStringList('account_playlists', listStringMap);
   }
 

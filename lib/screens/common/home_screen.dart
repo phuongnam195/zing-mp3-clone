@@ -7,8 +7,8 @@ import '../../pages/explorer_page.dart';
 import '../../pages/personal_page.dart';
 import '../../pages/radio_page.dart';
 import '../auth/login_screen.dart';
-import './account_screen.dart';
-import './search_screen.dart';
+import 'account_screen.dart';
+import 'search_screen.dart';
 import '../../widgets/common/playing_control_bar.dart';
 import '../../widgets/search/search_box.dart';
 
@@ -80,13 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       bottomNavigationBar: StreamBuilder<void>(
-          stream: PlayerController.instance.onChange,
+          stream: PlayerController.instance.onMusicChanged,
           builder: (context, snapshot) {
             return SizedBox(
-              height: playerController.isActive ? 60 * 2 : 60,
+              height: _currentPageIndex != 2 && playerController.isActive
+                  ? 60 * 2
+                  : 60,
               child: Column(
                 children: [
-                  if (playerController.isActive) const PlayingControlBar(),
+                  if (_currentPageIndex != 2 && playerController.isActive)
+                    const PlayingControlBar(),
                   BottomNavigationBar(
                     selectedItemColor: Theme.of(context).primaryColor,
                     unselectedItemColor: Theme.of(context).hintColor,

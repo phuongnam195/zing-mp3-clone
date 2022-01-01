@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:zing_mp3_clone/models/account.dart';
 
 import '../config.dart';
 import '../models/playing_log.dart';
@@ -10,7 +9,7 @@ class PlayingLogProvider {
   static final PlayingLogProvider instance = PlayingLogProvider._internal();
   PlayingLogProvider._internal();
 
-  List<PlayingLog> _list = [];
+  final List<PlayingLog> _list = [];
 
   List<PlayingLog> get list => [..._list];
 

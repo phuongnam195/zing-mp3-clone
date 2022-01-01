@@ -1,7 +1,5 @@
-import 'dart:convert';
-
-import 'package:zing_mp3_clone/providers/music_provider.dart';
-import 'package:zing_mp3_clone/models/music.dart';
+import '../providers/music_provider.dart';
+import 'music.dart';
 
 class Playlist {
   final String id;
@@ -17,23 +15,29 @@ class Playlist {
   });
 
   factory Playlist.fromMap(Map<String, dynamic> map, String id) {
-    List<String> musics = [];
-    for (var music in map['musicIDs']) {
-      musics.add(music as String);
-    }
     return Playlist(
       id: id,
       title: map['title'],
       imageUrl: map['imageUrl'],
-      musicIDs: musics,
+      musicIDs: (map['musicIDs'] as String).split('&&&&'),
     );
   }
 
-  Map get toMap => {
+  factory Playlist.fromMapFirebase(Map<String, dynamic> map, String id) {
+    return Playlist(
+      id: id,
+      title: map['title'],
+      imageUrl: map['imageUrl'],
+      musicIDs:
+          (map['musicIDs'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+  }
+
+  Map toMap() => {
         'id': id,
         'title': title,
         'imageUrl': imageUrl,
-        'musicIDs': jsonEncode(musicIDs),
+        'musicIDs': musicIDs.join('&&&&'),
       }..removeWhere((_, value) => value == null);
 
   Future<List<Music>> getMusicList() async {

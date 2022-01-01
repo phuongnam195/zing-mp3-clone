@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'screens/admin/admin_screen.dart';
 import 'providers/ranked_music_provider.dart';
 import 'providers/music_provider.dart';
 import 'providers/playlist_provider.dart';
@@ -15,7 +16,7 @@ import './screens/common/playlist_screen.dart';
 import './screens/common/search_screen.dart';
 import './screens/common/welcome_screen.dart';
 import './config.dart';
-import './screens/common/home_screen.dart';
+import 'screens/common/home_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -48,7 +49,9 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Open Sans',
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: WelcomeScreen.routeName,
+        initialRoute: Config.instance.myAccount == null
+            ? WelcomeScreen.routeName
+            : HomeScreen.routeName,
         routes: {
           WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
           LoginScreen.routeName: (ctx) => const LoginScreen(),
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
           SearchScreen.routeName: (ctx) => const SearchScreen(),
           PlayingScreen.routeName: (ctx) => const PlayingScreen(),
           PlaylistScreen.routeName: (ctx) => const PlaylistScreen(),
+          AdminScreen.routeName: (ctx) => const AdminScreen(),
         });
   }
 }

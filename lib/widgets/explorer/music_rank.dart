@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/controller/player_controller.dart';
+
+import '../../controller/player_controller.dart';
 import '../../providers/music_provider.dart';
 import '../../providers/ranked_music_provider.dart';
 import '../../models/music.dart';
@@ -125,7 +126,7 @@ class _MusicRankState extends State<MusicRank> {
                           playerController.maximizeScreen(context);
                         }
                         playerController.setMusicList(currentList, i);
-                        playerController.notifyChange();
+                        playerController.notifyMusicChange();
                       },
                     ),
                   Padding(

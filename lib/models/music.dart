@@ -20,9 +20,6 @@ class Music {
   });
 
   factory Music.fromMap(Map<String, dynamic> map, String id) {
-    if (id == '0JFGwaKDUU5zN6co8zoH') {
-      var x = 3;
-    }
     String? lyrics = map['lyrics'];
     if (lyrics != null) {
       lyrics = lyrics.replaceAll('\\n', '\n');
