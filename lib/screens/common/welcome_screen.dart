@@ -45,29 +45,26 @@ class WelcomeScreen extends StatelessWidget {
                     fixedSize: Size.fromWidth(screenWidth - 100),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   )),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(HomeScreen.routeName);
+                  Navigator.of(context)
+                      .pushReplacementNamed(HomeScreen.routeName);
                 },
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(HomeScreen.routeName);
-                  },
-                  child: const Text(
-                    'BỎ QUA',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  style: TextButton.styleFrom(
-                    primary: Colors.transparent,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
-                  ),
+                child: const Text(
+                  'BỎ QUA',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                ),
+                style: TextButton.styleFrom(
+                  primary: Colors.transparent,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
             ],
           ),
         )
