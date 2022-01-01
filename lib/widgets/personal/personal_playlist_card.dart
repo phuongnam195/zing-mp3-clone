@@ -1,24 +1,34 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../config.dart';
 import '../../models/playlist.dart';
 
 class PersonalPlaylistCard extends StatelessWidget {
-  const PersonalPlaylistCard({Key? key}) : super(key: key);
+  const PersonalPlaylistCard(this.playlist, {Key? key}) : super(key: key);
+
+  final Playlist playlist;
 
   @override
   Widget build(BuildContext context) {
-    if (Config.instance.myAccount == null ||
-        Config.instance.myAccount!.userPlaylists.isEmpty) {
-      return const Text('Không có dữ liệu');
-    }
-
-    // Dữ liệu giả
-    final Playlist userPlaylist = Config.instance.myAccount!.userPlaylists[0];
-    final String title = userPlaylist.title;
-    final int numberOfMusics = userPlaylist.musicIDs.length;
-    final String imageUrl = userPlaylist.getMusicAtIndex(0).imageUrl;
-
-    return ListTile();
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+      leading: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: CachedNetworkImage(
+            imageUrl: playlist.getMusicAtIndex(0).thumbnailUrl,
+            height: 56,
+            width: 56,
+            fit: BoxFit.cover,
+            errorWidget: (context, url, error) =>
+                Image.asset('assets/icons/playlist_96.png'),
+          )),
+      title: Text(
+        playlist.title,
+        style: const TextStyle(fontWeight: FontWeight.w500),
+      ),
+      subtitle: Text(
+        '${playlist.musicIDs.length} bài',
+      ),
+    );
   }
 }

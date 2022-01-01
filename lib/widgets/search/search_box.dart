@@ -4,11 +4,13 @@ class SearchBox extends StatelessWidget {
   const SearchBox({
     Key? key,
     this.onTap,
+    this.onSubmitted,
     this.autofocus = false,
     this.enabled = true,
   }) : super(key: key);
 
   final void Function()? onTap;
+  final void Function(String)? onSubmitted;
   final bool autofocus;
   final bool enabled;
 
@@ -40,6 +42,7 @@ class SearchBox extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           ),
+          onSubmitted: onSubmitted,
         ),
       ),
     );
