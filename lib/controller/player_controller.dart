@@ -36,7 +36,7 @@ class PlayerController {
   // Trạng thái hiện tại: Đang phát, tạm dừng, dừng hẳn, đã phát xong
   PlayerState state = PlayerState.STOPPED;
   // Chế độ shuffle
-  bool isShuffleMode = false;
+  bool shuffleMode = false;
   // Chế độ repeat
   RepeatMode repeatMode = RepeatMode.off;
   // Hiện lyrics
@@ -71,42 +71,41 @@ class PlayerController {
   }
 
   // Khi chọn một bài hát bất kì của một playlist
-  void setPlaylist(Playlist playlist, int index) {
+  void setPlaylist(Playlist playlist, {int? index, bool shuffle = false}) {
+    assert((index != null && !shuffle) || (index == null && shuffle));
+
     _musicList.clear();
     _playedIndexes.clear();
 
     playlist.getMusicList().then((result) => _musicList = result);
 
-    _currentIndex = index;
-
-    final initMusic = playlist.getMusicAtIndex(index);
-    _play(initMusic);
-    notifyMusicChange();
-  }
-
-  // Khi ấn "PHÁT NGẪU NHIÊN" một playlist
-  void setShufflePlaylist(Playlist playlist) {
-    _musicList.clear();
-    _playedIndexes.clear();
-
-    playlist.getMusicList().then((result) => _musicList = result);
-
-    _currentIndex = _rng.nextInt(playlist.musicIDs.length);
+    if (shuffle) {
+      _currentIndex = _rng.nextInt(playlist.musicIDs.length);
+    } else {
+      _currentIndex = index!;
+    }
 
     final initMusic = playlist.getMusicAtIndex(_currentIndex);
     _play(initMusic);
-    isShuffleMode = true;
+    shuffleMode = shuffle;
     notifyMusicChange();
   }
 
   // Khi chọn một bài hát bất kì của một playlist
-  void setMusicList(List<Music> musicList, int index) {
+  void setMusicList(List<Music> musicList, {int? index, bool shuffle = false}) {
+    assert((index != null && !shuffle) || (index == null && shuffle));
+
     _musicList = [...musicList];
     _playedIndexes.clear();
 
-    _currentIndex = index;
+    if (shuffle) {
+      _currentIndex = _rng.nextInt(musicList.length);
+    } else {
+      _currentIndex = index!;
+    }
 
-    final initMusic = musicList[index];
+    final initMusic = musicList[_currentIndex];
+    shuffleMode = shuffle;
     _play(initMusic);
   }
 
@@ -128,7 +127,7 @@ class PlayerController {
   }
 
   void toggleShuffle() {
-    isShuffleMode = !isShuffleMode;
+    shuffleMode = !shuffleMode;
   }
 
   void toggleRepeat() {
@@ -156,7 +155,7 @@ class PlayerController {
         }
         // ngược lại thì phát bài tiếp theo: random hoặc next
         else {
-          _currentIndex = isShuffleMode
+          _currentIndex = shuffleMode
               ? _getNextRandomIndex()
               : ((_currentIndex + 1) % _musicList.length);
           _play(_musicList[_currentIndex]);
@@ -174,7 +173,7 @@ class PlayerController {
         // do người dùng click
         else {
           // thì phát bài tiếp theo: random hoặc next
-          _currentIndex = isShuffleMode
+          _currentIndex = shuffleMode
               ? _getNextRandomIndex()
               : ((_currentIndex + 1) % _musicList.length);
           _play(_musicList[_currentIndex]);
@@ -185,7 +184,7 @@ class PlayerController {
       // Nếu bật REPEAT cả danh sách
       case RepeatMode.all:
         // thì phát bài tiếp theo: random hoặc next
-        _currentIndex = isShuffleMode
+        _currentIndex = shuffleMode
             ? _getNextRandomIndex()
             : ((_currentIndex + 1) % _musicList.length);
         _play(_musicList[_currentIndex]);

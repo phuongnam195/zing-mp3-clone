@@ -125,7 +125,7 @@ class _MusicRankState extends State<MusicRank> {
                         if (!playerController.isActive) {
                           playerController.maximizeScreen(context);
                         }
-                        playerController.setMusicList(currentList, i);
+                        playerController.setMusicList(currentList, index: i);
                         playerController.notifyMusicChange();
                       },
                     ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/screens/explorer/all_playlists_screen.dart';
 
+import '../screens/explorer/all_playlists_screen.dart';
 import '../providers/playlist_provider.dart';
 import '../screens/common/playlist_screen.dart';
 import '../widgets/explorer/explorer_playlist_card.dart';
@@ -11,7 +11,7 @@ class ExplorerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var allPlaylists = PlaylistProvider.instance.list;
+    var fourPlaylists = PlaylistProvider.instance.list.sublist(0, 4);
 
     return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -55,9 +55,9 @@ class ExplorerPage extends StatelessWidget {
                   mainAxisSpacing: 10,
                   childAspectRatio: 0.92,
                 ),
-                itemCount: allPlaylists.length,
+                itemCount: fourPlaylists.length,
                 itemBuilder: (ctx, index) {
-                  final playlist = allPlaylists[index];
+                  final playlist = fourPlaylists[index];
                   return Center(
                     child: ExplorerPlaylistCard(
                       title: playlist.title,

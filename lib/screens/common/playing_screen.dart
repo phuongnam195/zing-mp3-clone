@@ -160,7 +160,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
                               iconSize: 26,
                               icon: Icon(
                                 Icons.shuffle_rounded,
-                                color: controller.isShuffleMode
+                                color: controller.shuffleMode
                                     ? activeColor
                                     : Colors.white,
                               ),

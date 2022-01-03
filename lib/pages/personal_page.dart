@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../config.dart';
+import '../screens/common/playlist_screen.dart';
 import '../widgets/personal/personal_playlist_card.dart';
 import '../widgets/personal/library_playlist_card.dart';
 
@@ -37,6 +38,12 @@ class PersonalPage extends StatelessWidget {
                   title: 'Tất cả bài hát',
                   iconAsset: 'assets/icons/music_library_48.png',
                   width: lpcWidth,
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(PlaylistScreen.routeName, arguments: {
+                      'type': 'AllMusics',
+                    });
+                  },
                 ),
                 const SizedBox(width: GAP),
                 LibraryPlaylistCard(

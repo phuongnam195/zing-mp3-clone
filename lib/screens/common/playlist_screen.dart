@@ -2,45 +2,85 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../../providers/music_provider.dart';
+import '../../models/playlist.dart';
 import '../../widgets/common/music_card.dart';
 import '../../controller/player_controller.dart';
 import '../../providers/playlist_provider.dart';
 import '../../models/music.dart';
-import '../../models/playlist.dart';
 
-class PlaylistScreen extends StatelessWidget {
+class PlaylistScreen extends StatefulWidget {
   static const routeName = '/home/playlist';
 
   const PlaylistScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final playerController = PlayerController.instance;
+  State<PlaylistScreen> createState() => _PlaylistScreenState();
+}
 
-    late final Playlist playlist;
-    late final String title;
-    late final int numberOfMusic;
+class _PlaylistScreenState extends State<PlaylistScreen> {
+  final playerController = PlayerController.instance;
+
+  late List<Music> musics;
+  late final String title;
+  late final int numberOfMusic;
+  String? backgroundUrl;
+  String? backgroundAsset;
+  bool isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (isLoading) {
+      return;
+    }
+
+    void getMusicsFromPlaylist(Playlist playlist) async {
+      setState(() {
+        isLoading = true;
+      });
+      musics = await playlist.getMusicList();
+      setState(() {
+        isLoading = false;
+      });
+    }
 
     final arguments =
         ModalRoute.of(context)!.settings.arguments! as Map<String, String>;
-    final type = arguments['type'];
-    if (type == 'ExplorerPlaylist') {
-      final playlistId = arguments['id']!;
-      playlist = PlaylistProvider.instance.getByID(playlistId);
-      title = playlist.title;
-      numberOfMusic = playlist.musicIDs.length;
+    final type = arguments['type']!;
+
+    switch (type) {
+      case 'ExplorerPlaylist':
+        final playlistId = arguments['id']!;
+        final playlist = PlaylistProvider.instance.getByID(playlistId);
+        getMusicsFromPlaylist(playlist);
+        title = playlist.title;
+        numberOfMusic = playlist.musicIDs.length;
+        backgroundUrl = playlist.imageUrl;
+        break;
+
+      case 'AllMusics':
+        musics = MusicProvider.instance.list;
+        title = 'Tất cả bài hát';
+        numberOfMusic = musics.length;
+        backgroundAsset = 'assets/images/playlist/user_playlist_background.jpg';
+        break;
     }
 
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        type == 'ExplorerPlaylist'
+        backgroundUrl != null
             ? Container(
                 height: 100,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                    image: NetworkImage(playlist.imageUrl!),
+                    image: NetworkImage(backgroundUrl!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -50,8 +90,7 @@ class PlaylistScreen extends StatelessWidget {
                       color: Colors.black.withOpacity(0.02),
                     )),
               )
-            : Image.asset('assets/images/playlist/user_playlist_background.jpg',
-                fit: BoxFit.fitWidth),
+            : Image.asset(backgroundAsset!, fit: BoxFit.fitWidth),
         Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -94,7 +133,7 @@ class PlaylistScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           playerController.maximizeScreen(context);
-                          playerController.setShufflePlaylist(playlist);
+                          playerController.setMusicList(musics, shuffle: true);
                         },
                         child: const Text('PHÁT NGẪU NHIÊN',
                             style: TextStyle(fontSize: 15))),
@@ -102,37 +141,26 @@ class PlaylistScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    color: Colors.white,
-                    child: FutureBuilder<List<Music>>(
-                      future: playlist.getMusicList(),
-                      builder: (ctx, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-
-                        final musicList = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: numberOfMusic,
-                          itemBuilder: (ctx, index) {
-                            final music = musicList[index];
-                            return MusicCard(
-                              title: music.title,
-                              artists: music.artists,
-                              thumbnailUrl: music.thumbnailUrl,
-                              onTap: () {
-                                if (!playerController.isActive) {
-                                  playerController.maximizeScreen(context);
-                                }
-                                playerController.setMusic(music);
+                      color: Colors.white,
+                      child: isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ListView.builder(
+                              itemCount: numberOfMusic,
+                              itemBuilder: (ctx, index) {
+                                final music = musics[index];
+                                return MusicCard(
+                                  title: music.title,
+                                  artists: music.artists,
+                                  thumbnailUrl: music.thumbnailUrl,
+                                  onTap: () {
+                                    if (!playerController.isActive) {
+                                      playerController.maximizeScreen(context);
+                                    }
+                                    playerController.setMusic(music);
+                                  },
+                                );
                               },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                            )),
                 ),
               ],
             ))
