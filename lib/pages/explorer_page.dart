@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/screens/explorer/all_playlists_screen.dart';
 
 import '../providers/playlist_provider.dart';
 import '../screens/common/playlist_screen.dart';
@@ -32,7 +33,10 @@ class ExplorerPage extends StatelessWidget {
                           fontSize: 22,
                           fontWeight: FontWeight.bold)),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(AllPlaylistsScreen.routeName);
+                    },
                     child: const Text(
                       'Xem thêm',
                     ),

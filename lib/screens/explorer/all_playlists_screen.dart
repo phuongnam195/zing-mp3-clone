@@ -4,6 +4,8 @@ import '../../providers/playlist_provider.dart';
 import '../../models/playlist.dart';
 
 class AllPlaylistsScreen extends StatelessWidget {
+  static const routeName = '/home/all-playlists';
+
   const AllPlaylistsScreen({Key? key}) : super(key: key);
 
   @override

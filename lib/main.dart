@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/screens/explorer/all_playlists_screen.dart';
 
 import 'screens/admin/admin_screen.dart';
 import 'providers/ranked_music_provider.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
           SearchScreen.routeName: (ctx) => const SearchScreen(),
           PlayingScreen.routeName: (ctx) => const PlayingScreen(),
           PlaylistScreen.routeName: (ctx) => const PlaylistScreen(),
+          AllPlaylistsScreen.routeName: (ctx) => const AllPlaylistsScreen(),
           AdminScreen.routeName: (ctx) => const AdminScreen(),
         });
   }
