@@ -27,3 +27,6 @@ Flutter, Firebase
   <img src="https://user-images.githubusercontent.com/90912187/148486672-500a35d1-87ee-4655-80be-d989f3c68cf7.png" width="220" /> 
   <img src="https://user-images.githubusercontent.com/90912187/148486736-0848ad42-472f-4e5b-b091-b988c64fcea4.png" width="220" /> 
 </p>
+
+## Original
+[Google Play/Zing MP3](https://play.google.com/store/apps/details?id=com.zing.mp3)
