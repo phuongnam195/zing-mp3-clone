@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zing_mp3_clone">
    <application
-        android:label="zing_mp3_clone"
+        android:label="Music App"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
