@@ -1,5 +1,5 @@
 # Zing MP3 clone (in progress...)
-## Team 13 - Introduction to Software Technology course
+## Team 13 - Introduction to Software Engineer course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## Technologies
 Flutter, Firebase
