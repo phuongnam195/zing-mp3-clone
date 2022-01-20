@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/playing/seekbar.dart';
-import '../../controller/player_controller.dart';
+import '../../controllers/player_controller.dart';
 
 class PlayingScreen extends StatefulWidget {
   static const routeName = '/playing';

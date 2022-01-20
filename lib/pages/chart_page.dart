@@ -1,12 +1,12 @@
 import 'package:charts_flutter/flutter.dart' hide Color;
 import 'package:flutter/material.dart';
 
-class ListensPoint {
-  final int hour;
-  final int listens;
-
-  ListensPoint(this.hour, this.listens);
-}
+import '../controllers/player_controller.dart';
+import '../models/music.dart';
+import '../providers/music_provider.dart';
+import '../widgets/common/ranked_music_card.dart';
+import '../controllers/chart_controller.dart';
+import '../models/hour_counting.dart';
 
 class ChartPage extends StatelessWidget {
   const ChartPage({Key? key}) : super(key: key);
@@ -15,42 +15,23 @@ class ChartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final chartColorMap = {
+      0: MaterialPalette.white,
+      1: MaterialPalette.blue.shadeDefault,
+      2: MaterialPalette.red.shadeDefault,
+      3: MaterialPalette.green.shadeDefault,
+    };
 
-    final List<Series<dynamic, num>> seriesList = [
-      Series<ListensPoint, int>(
-          id: 'Bai 1',
-          colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-          domainFn: (ListensPoint point, _) => point.hour,
-          measureFn: (ListensPoint point, _) => point.listens,
-          data: [
-            ListensPoint(0, 7),
-            ListensPoint(1, 2),
-            ListensPoint(2, 4),
-            ListensPoint(3, 5),
-          ]),
-      Series<ListensPoint, int>(
-          id: 'Bai 2',
-          colorFn: (_, __) => MaterialPalette.red.shadeDefault,
-          domainFn: (ListensPoint point, _) => point.hour,
-          measureFn: (ListensPoint point, _) => point.listens,
-          data: [
-            ListensPoint(0, 1),
-            ListensPoint(1, 5),
-            ListensPoint(2, 0),
-            ListensPoint(3, 6),
-          ]),
-      Series<ListensPoint, int>(
-          id: 'Bai 3',
-          colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-          domainFn: (ListensPoint point, _) => point.hour,
-          measureFn: (ListensPoint point, _) => point.listens,
-          data: [
-            ListensPoint(0, 5),
-            ListensPoint(1, 2),
-            ListensPoint(2, 7),
-            ListensPoint(3, 3),
-          ]),
-    ];
+    final listColorMap = {
+      0: Colors.white,
+      1: Colors.blue,
+      2: Colors.red,
+      3: Colors.green,
+    };
+
+    final playerController = PlayerController.instance;
+    final chartController = ChartController.instance;
+    chartController.init();
 
     return Stack(
       children: [
@@ -68,30 +49,55 @@ class ChartPage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).padding.top, bottom: 20),
-                child: LineChart(
-                  seriesList,
-                  animate: false,
-                  defaultRenderer:
-                      LineRendererConfig(includePoints: true, strokeWidthPx: 3),
-                  primaryMeasureAxis: const NumericAxisSpec(
-                      renderSpec: GridlineRendererSpec(
-                    labelStyle: TextStyleSpec(
-                      fontSize: 12,
-                      color: MaterialPalette.white,
-                    ),
-                  )),
-                  domainAxis: const NumericAxisSpec(
-                      renderSpec: GridlineRendererSpec(
-                    axisLineStyle:
-                        LineStyleSpec(color: MaterialPalette.transparent),
-                    lineStyle:
-                        LineStyleSpec(color: MaterialPalette.transparent),
-                    labelStyle: TextStyleSpec(
-                      fontSize: 12,
-                      color: MaterialPalette.white,
-                    ),
-                  )),
-                ),
+                child: StreamBuilder<void>(
+                    stream: chartController.onChartUpdate,
+                    builder: (ctx, _) {
+                      final List<Series<dynamic, num>> seriesList = [
+                        for (var hourCounting
+                            in chartController.currentChartData)
+                          Series<Point, int>(
+                              id: hourCounting.musicID,
+                              colorFn: (_, __) =>
+                                  chartColorMap[hourCounting.color] ??
+                                  MaterialPalette.white,
+                              domainFn: (Point point, _) => point.x,
+                              measureFn: (Point point, _) => point.y,
+                              data: hourCounting
+                                  .getPoints(chartController.currentHour))
+                      ];
+
+                      return LineChart(
+                        seriesList,
+                        animate: false,
+                        defaultRenderer: LineRendererConfig(
+                            includePoints: true, strokeWidthPx: 3),
+                        primaryMeasureAxis: const NumericAxisSpec(
+                            renderSpec: GridlineRendererSpec(
+                          labelStyle: TextStyleSpec(
+                            fontSize: 12,
+                            color: MaterialPalette.white,
+                          ),
+                        )),
+                        domainAxis: NumericAxisSpec(
+                          tickProviderSpec: StaticNumericTickProviderSpec([
+                            for (int i = chartController.firstHour;
+                                i <= chartController.lastHour;
+                                i++)
+                              TickSpec(i),
+                          ]),
+                          renderSpec: const GridlineRendererSpec(
+                            axisLineStyle: LineStyleSpec(
+                                color: MaterialPalette.transparent),
+                            lineStyle: LineStyleSpec(
+                                color: MaterialPalette.transparent),
+                            labelStyle: TextStyleSpec(
+                              fontSize: 12,
+                              color: MaterialPalette.white,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
               ),
             ),
             const Spacer(),
@@ -105,6 +111,44 @@ class ChartPage extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
+            child: StreamBuilder<void>(
+                stream: chartController.onListUpdate,
+                builder: (_, __) {
+                  final musicIDs = chartController.currentChartData
+                      .map((e) => e.musicID)
+                      .toList();
+
+                  List<Music> musics = musicIDs
+                      .map((id) => MusicProvider.instance.getByID(id))
+                      .toList();
+                  List<Color> colors = chartController.currentChartData
+                      .map((e) => listColorMap[e.color]!)
+                      .toList();
+
+                  return ListView.builder(
+                      padding: const EdgeInsets.only(top: 20, left: 10),
+                      itemCount: musics.length,
+                      itemBuilder: (_, i) {
+                        final music = musics[i];
+                        return InkWell(
+                          child: RankedMusicCard(
+                            order: i + 1,
+                            title: music.title,
+                            artists: music.artists,
+                            thumbnailUrl: music.thumbnailUrl,
+                            orderColor: colors[i],
+                            orderWidth: 60,
+                          ),
+                          onTap: () {
+                            if (!playerController.isActive) {
+                              playerController.maximizeScreen(context);
+                            }
+                            playerController.setMusicList(musics, index: i);
+                            playerController.notifyMusicChange();
+                          },
+                        );
+                      });
+                }),
           ),
         )
       ],

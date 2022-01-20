@@ -9,11 +9,14 @@ class PlayingLogProvider {
   static final PlayingLogProvider instance = PlayingLogProvider._internal();
   PlayingLogProvider._internal();
 
-  final List<PlayingLog> _list = [];
+  final collection = FirebaseFirestore.instance.collection('playing_logs');
 
+  final List<PlayingLog> _list = [];
   List<PlayingLog> get list => [..._list];
 
-  final collection = FirebaseFirestore.instance.collection('playing_logs');
+  final StreamController<List<PlayingLog>> _newLogController =
+      StreamController<List<PlayingLog>>.broadcast();
+  Stream<List<PlayingLog>> get onNewLogs => _newLogController.stream;
 
   Future<void> fetchAndSetData() async {
     try {
@@ -30,22 +33,27 @@ class PlayingLogProvider {
     }
   }
 
+  bool _isSetup = false;
   void setupChangesListener() {
+    if (_isSetup) return;
     final firestore = FirebaseFirestore.instance;
     firestore
         .collection('playing_logs')
         .orderBy('datetime')
         .snapshots()
         .listen((querySnapshot) {
+      List<PlayingLog> newLogs = [];
       for (var docChange in querySnapshot.docChanges) {
         final newLog =
             PlayingLog.fromMap(docChange.doc.data()!, docChange.doc.id);
+        newLogs.add(newLog);
         _list.add(newLog);
       }
       if (querySnapshot.docChanges.isNotEmpty) {
-        // notifyListeners();
+        _newLogController.add(newLogs);
       }
     });
+    _isSetup = true;
   }
 
   void addNewLog(String musicId) {

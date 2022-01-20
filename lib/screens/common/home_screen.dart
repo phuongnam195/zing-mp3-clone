@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zing_mp3_clone/config.dart';
 
-import '../../controller/player_controller.dart';
+import '../../controllers/player_controller.dart';
 import '../../pages/chart_page.dart';
 import '../../pages/explorer_page.dart';
 import '../../pages/personal_page.dart';

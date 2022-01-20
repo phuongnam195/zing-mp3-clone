@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../../controller/player_controller.dart';
+import '../../controllers/player_controller.dart';
 
 class PlayingControlBar extends StatelessWidget {
   const PlayingControlBar({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../controller/player_controller.dart';
+import '../../controllers/player_controller.dart';
 import '../../utils/converter.dart';
 
 class SeekBar extends StatefulWidget {

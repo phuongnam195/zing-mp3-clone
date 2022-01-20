@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../providers/music_provider.dart';
 import '../../models/playlist.dart';
 import '../../widgets/common/music_card.dart';
-import '../../controller/player_controller.dart';
+import '../../controllers/player_controller.dart';
 import '../../providers/playlist_provider.dart';
 import '../../models/music.dart';
 

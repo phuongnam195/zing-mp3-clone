@@ -8,23 +8,30 @@ class RankedMusicCard extends StatelessWidget {
     required this.title,
     required this.artists,
     required this.thumbnailUrl,
+    this.orderColor,
+    this.orderWidth,
   }) : super(key: key);
 
   final int order;
   final String title;
   final String artists;
   final String thumbnailUrl;
+  final Color? orderColor;
+  final double? orderWidth;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         SizedBox(
-            width: 46,
+            width: orderWidth ?? 46,
             child: Center(
                 child: Text(
               '$order',
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(
+                  color: orderColor ?? Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ))),
         Expanded(
           child: ListTile(

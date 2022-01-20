@@ -36,7 +36,7 @@ class SearchBox extends StatelessWidget {
             prefixIcon: Icon(Icons.search, color: Theme.of(context).hintColor),
             isDense: true,
             filled: true,
-            fillColor: Colors.grey[200],
+            fillColor: Colors.grey.withOpacity(0.2),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(height / 2),
               borderSide: BorderSide.none,

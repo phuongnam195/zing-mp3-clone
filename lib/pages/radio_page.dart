@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../controller/player_controller.dart';
+import '../controllers/player_controller.dart';
 import '../providers/music_provider.dart';
 import '../widgets/common/music_card.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/controller/player_controller.dart';
-import 'package:zing_mp3_clone/providers/music_provider.dart';
-import 'package:zing_mp3_clone/widgets/common/music_card.dart';
 
+import '../../controllers/player_controller.dart';
+import '../../providers/music_provider.dart';
+import '../../widgets/common/music_card.dart';
 import '../../providers/recent_search_provider.dart';
 import '../../models/music.dart';
 import '../../widgets/search/search_box.dart';
