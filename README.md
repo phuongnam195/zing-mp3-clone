@@ -1,4 +1,5 @@
 # Zing MP3 clone (in progress...)
+*NOTE: Actually, this project is only inspired by the original app, not clone.
 ## Team 13 - Introduction to Software Engineer course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## Technologies
