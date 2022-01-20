@@ -1,28 +1,54 @@
 import 'package:flutter/material.dart';
 
 import '../controllers/player_controller.dart';
-import '../providers/music_provider.dart';
-import '../widgets/common/music_card.dart';
+import '../providers/radio_provider.dart';
+import '../widgets/radio/channel_card.dart';
 
-class RadioPage extends StatelessWidget {
+class RadioPage extends StatefulWidget {
   const RadioPage({Key? key}) : super(key: key);
 
   @override
+  State<RadioPage> createState() => _RadioPageState();
+}
+
+class _RadioPageState extends State<RadioPage> {
+  @override
   Widget build(BuildContext context) {
-    final allMusics = MusicProvider.instance.list;
-    return ListView.builder(
-      itemCount: allMusics.length,
-      itemBuilder: (ctx, index) {
-        final music = allMusics[index];
-        return MusicCard(
-          title: music.title,
-          artists: music.artists,
-          thumbnailUrl: music.thumbnailUrl,
-          onTap: () {
-            PlayerController.instance.setMusic(music);
+    final channels = RadioProvider.instance.channels;
+
+    return Stack(children: [
+      Image.asset('assets/images/radio/radio_background.jpg',
+          fit: BoxFit.fitWidth),
+      Center(
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.95,
+          ),
+          itemCount: channels.length,
+          itemBuilder: (ctx, index) {
+            final channel = channels[index];
+            return GestureDetector(
+              child: ChannelCard(
+                channel,
+                isStreaming: index == RadioProvider.instance.current,
+              ),
+              onTap: () {
+                if (PlayerController.instance.isPlaying) {
+                  PlayerController.instance.togglePlay();
+                }
+                setState(() {
+                  RadioProvider.instance.play(index);
+                });
+              },
+            );
           },
-        );
-      },
-    );
+          padding: const EdgeInsets.only(top: 120, left: 20, right: 20),
+        ),
+      ),
+    ]);
   }
 }

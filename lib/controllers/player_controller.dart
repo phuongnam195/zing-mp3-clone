@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/providers/radio_provider.dart';
 
 import '../providers/playing_log_provider.dart';
 import '../models/music.dart';
@@ -49,6 +50,8 @@ class PlayerController {
     }
     return _musicList[_currentIndex];
   }
+
+  bool get isPlaying => state == PlayerState.PLAYING;
 
   Stream<Duration> get onPositionChanged => _audioPlayer.onAudioPositionChanged;
   bool get isActive => state != PlayerState.STOPPED;
@@ -113,6 +116,10 @@ class PlayerController {
     _audioPlayer.play(music.audioUrl);
     state = PlayerState.PLAYING;
     PlayingLogProvider.instance.addNewLog(music.id);
+
+    if (RadioProvider.instance.isPlaying) {
+      RadioProvider.instance.stop();
+    }
   }
 
   void togglePlay() {
