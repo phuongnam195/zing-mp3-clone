@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/providers/device_music_provider.dart';
-import 'package:zing_mp3_clone/screens/explorer/all_playlists_screen.dart';
 
+import 'screens/explorer/all_playlists_screen.dart';
 import 'screens/admin/admin_screen.dart';
 import 'providers/ranked_music_provider.dart';
 import 'providers/music_provider.dart';
@@ -17,9 +15,10 @@ import './screens/common/playing_screen.dart';
 import './screens/common/playlist_screen.dart';
 import './screens/common/search_screen.dart';
 import './screens/common/welcome_screen.dart';
-import './config.dart';
+import 'utils/config.dart';
 import 'screens/common/home_screen.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

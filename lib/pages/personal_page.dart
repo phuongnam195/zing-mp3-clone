@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../config.dart';
+import '../utils/config.dart';
 import '../screens/common/playlist_screen.dart';
 import '../widgets/personal/personal_playlist_card.dart';
 import '../widgets/personal/library_playlist_card.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/config.dart';
 
+import '../../utils/config.dart';
 import '../../controllers/player_controller.dart';
 import '../../pages/chart_page.dart';
 import '../../pages/explorer_page.dart';

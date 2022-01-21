@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../config.dart';
+import '../utils/config.dart';
 import '../models/playing_log.dart';
 
 class PlayingLogProvider {

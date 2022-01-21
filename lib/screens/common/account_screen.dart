@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../config.dart';
+import '../../utils/config.dart';
 import './welcome_screen.dart';
 
 class AccountScreen extends StatelessWidget {

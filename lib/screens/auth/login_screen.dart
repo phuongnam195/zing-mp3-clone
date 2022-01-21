@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../admin/admin_screen.dart';
-import '../../config.dart';
+import '../../utils/config.dart';
 import '../../models/account.dart';
 import '../../models/playlist.dart';
 import '../../utils/my_dialog.dart';
