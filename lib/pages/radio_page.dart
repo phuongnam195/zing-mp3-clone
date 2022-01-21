@@ -14,6 +14,8 @@ class RadioPage extends StatefulWidget {
 class _RadioPageState extends State<RadioPage> {
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     final channels = RadioProvider.instance.channels;
 
     return Stack(children: [
@@ -46,7 +48,8 @@ class _RadioPageState extends State<RadioPage> {
               },
             );
           },
-          padding: const EdgeInsets.only(top: 120, left: 20, right: 20),
+          padding:
+              EdgeInsets.only(top: screenHeight * 0.22, left: 20, right: 20),
         ),
       ),
     ]);

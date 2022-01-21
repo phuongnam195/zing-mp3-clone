@@ -122,31 +122,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.of(context).pushNamed(ForgotScreen.routeName);
                 },
-                child: const Text('Quên mật khẩu')),
+                child: const Text(
+                  'Quên mật khẩu',
+                  style: TextStyle(color: Colors.black),
+                )),
           ],
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/auth/login_image.png'),
-            const Text('Đăng nhập'),
-            const Text(
-                'Vui lòng điền thông tin đăng nhập bên dưới để tiếp tục'),
-            LoginCard(_onSubmit),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Chưa có tài khoản?'),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(SignUpScreen.routeName);
-                    },
-                    child: const Text('Đăng ký'))
-              ],
-            ),
-            const Spacer(),
-            if (_isSubmitting) const LinearProgressIndicator(),
-          ],
+        body: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/auth/login_image.png'),
+              const SizedBox(height: 10),
+              const Text('Đăng nhập',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              const Text(
+                'Vui lòng điền thông tin đăng nhập bên dưới để tiếp tục',
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 15),
+              LoginCard(_onSubmit),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Chưa có tài khoản?'),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                      },
+                      child: const Text('Đăng ký'))
+                ],
+              ),
+              const Spacer(),
+              if (_isSubmitting) const LinearProgressIndicator(),
+            ],
+          ),
         ),
       ),
     );

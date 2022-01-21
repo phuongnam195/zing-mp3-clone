@@ -41,8 +41,10 @@ class _LoginCardState extends State<LoginCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -75,6 +77,7 @@ class _LoginCardState extends State<LoginCard> {
             ),
             obscureText: true,
           ),
+          const SizedBox(height: 15),
           ElevatedButton(
             child: const Text(
               'ĐĂNG NHẬP',
@@ -85,19 +88,18 @@ class _LoginCardState extends State<LoginCard> {
                     await _login();
                   },
             style: ElevatedButton.styleFrom(
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-              textStyle: TextStyle(
-                fontSize: 18,
-                fontWeight: _canLogin ? FontWeight.w500 : FontWeight.w400,
-              ),
-              primary: Theme.of(context).primaryColor,
-              onPrimary: Colors.white,
-              shadowColor: Colors.transparent,
-              splashFactory: NoSplash.splashFactory,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(_borderRadius)),
-            ),
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 17),
+                textStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: _canLogin ? FontWeight.w500 : FontWeight.w400,
+                ),
+                primary: Theme.of(context).primaryColor,
+                onPrimary: Colors.white,
+                shadowColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+                shape: const StadiumBorder(),
+                fixedSize: Size.fromWidth(screenWidth - 2 * 30)),
           ),
         ],
       ),

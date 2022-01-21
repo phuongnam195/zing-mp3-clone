@@ -25,7 +25,8 @@ class MusicCard extends StatelessWidget {
           height: 56,
           width: 56,
           fit: BoxFit.cover,
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) =>
+              Image.asset('assets/icons/non_thumb_music_100.jpg'),
         ),
       ),
       minLeadingWidth: 56,

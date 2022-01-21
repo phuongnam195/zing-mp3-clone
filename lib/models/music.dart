@@ -7,6 +7,7 @@ class Music {
   final String audioUrl;
   final int duration;
   String? lyrics;
+  final bool isDevice;
 
   Music({
     required this.id,
@@ -17,7 +18,17 @@ class Music {
     required this.audioUrl,
     required this.duration,
     this.lyrics,
-  });
+  }) : isDevice = false;
+
+  Music.device(
+      {required this.id,
+      required this.title,
+      required this.artists,
+      required this.duration,
+      required this.audioUrl})
+      : thumbnailUrl = '',
+        imageUrl = '',
+        isDevice = true;
 
   factory Music.fromMap(Map<String, dynamic> map, String id) {
     String? lyrics = map['lyrics'];

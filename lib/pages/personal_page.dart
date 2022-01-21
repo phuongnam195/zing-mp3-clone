@@ -47,9 +47,16 @@ class PersonalPage extends StatelessWidget {
                 ),
                 const SizedBox(width: GAP),
                 LibraryPlaylistCard(
-                    title: 'Trên thiết bị',
-                    iconAsset: 'assets/icons/ipod_old_48.png',
-                    width: lpcWidth),
+                  title: 'Trên thiết bị',
+                  iconAsset: 'assets/icons/ipod_old_48.png',
+                  width: lpcWidth,
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(PlaylistScreen.routeName, arguments: {
+                      'type': 'DeviceMusics',
+                    });
+                  },
+                ),
               ],
             ),
             const SizedBox(height: GAP),

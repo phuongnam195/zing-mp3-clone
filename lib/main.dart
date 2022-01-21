@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/providers/device_music_provider.dart';
 import 'package:zing_mp3_clone/screens/explorer/all_playlists_screen.dart';
 
 import 'screens/admin/admin_screen.dart';
@@ -33,6 +34,7 @@ void main() async {
     await Config.instance.loadAccountData();
   }
   await RecentSearchProvider.instance.load();
+  // await DeviceMusicProvider.instance.scanAudioFiles();
 
   runApp(const MyApp());
 }

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:zing_mp3_clone/providers/device_music_provider.dart';
 
 import '../../providers/music_provider.dart';
 import '../../models/playlist.dart';
@@ -64,6 +65,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         numberOfMusic = musics.length;
         backgroundAsset = 'assets/images/playlist/user_playlist_background.jpg';
         break;
+
+      case 'DeviceMusics':
+        musics = DeviceMusicProvider.instance.list;
+        title = 'Trên thiết bị';
+        numberOfMusic = musics.length;
+        backgroundAsset = 'assets/images/playlist/user_playlist_background.jpg';
     }
 
     super.didChangeDependencies();
@@ -156,7 +163,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     if (!playerController.isActive) {
                                       playerController.maximizeScreen(context);
                                     }
-                                    playerController.setMusic(music);
+                                    playerController.setMusicList(musics,
+                                        index: index);
                                   },
                                 );
                               },

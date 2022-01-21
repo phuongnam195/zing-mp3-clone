@@ -115,7 +115,9 @@ class PlayerController {
   void _play(Music music) {
     _audioPlayer.play(music.audioUrl);
     state = PlayerState.PLAYING;
-    PlayingLogProvider.instance.addNewLog(music.id);
+    if (!music.isDevice) {
+      PlayingLogProvider.instance.addNewLog(music.id);
+    }
 
     if (RadioProvider.instance.isPlaying) {
       RadioProvider.instance.stop();
@@ -127,6 +129,9 @@ class PlayerController {
       _audioPlayer.pause();
       state = PlayerState.PAUSED;
     } else if (state == PlayerState.PAUSED) {
+      if (RadioProvider.instance.isPlaying) {
+        RadioProvider.instance.stop();
+      }
       _audioPlayer.resume();
       state = PlayerState.PLAYING;
     }
@@ -205,6 +210,8 @@ class PlayerController {
       _audioPlayer.seek(Duration.zero);
       if (state == PlayerState.PAUSED) {
         _audioPlayer.resume();
+        state = PlayerState.PLAYING;
+        notifyMusicChange();
       }
     } else {
       _currentIndex = _playedIndexes.last;

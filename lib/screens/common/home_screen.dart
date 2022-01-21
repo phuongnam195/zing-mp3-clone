@@ -38,32 +38,34 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.account_circle_outlined,
-              color: Theme.of(context).primaryColor,
-              size: 30,
-            ),
-            onPressed: () {
-              if (Config.instance.myAccount != null) {
-                Navigator.of(context).pushNamed(AccountScreen.routeName);
-              } else {
-                Navigator.of(context).pushNamed(LoginScreen.routeName);
-              }
-            },
-          ),
-          titleSpacing: 0,
-          title: Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: SearchBox(
-                enabled: false,
-                onTap: () {
-                  Navigator.of(context).pushNamed(SearchScreen.routeName);
-                }),
-          )),
+      appBar: _currentPageIndex == 3
+          ? null
+          : AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.account_circle_outlined,
+                  color: Theme.of(context).primaryColor,
+                  size: 30,
+                ),
+                onPressed: () {
+                  if (Config.instance.myAccount != null) {
+                    Navigator.of(context).pushNamed(AccountScreen.routeName);
+                  } else {
+                    Navigator.of(context).pushNamed(LoginScreen.routeName);
+                  }
+                },
+              ),
+              titleSpacing: 0,
+              title: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: SearchBox(
+                    enabled: false,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(SearchScreen.routeName);
+                    }),
+              )),
       body: PageView(
         scrollDirection: Axis.horizontal,
         controller: _pageController,
