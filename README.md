@@ -36,3 +36,8 @@ Flutter, Firebase
 
 ## Original app
 [Google Play/Zing MP3](https://play.google.com/store/apps/details?id=com.zing.mp3)
+
+## Resource
+- Unsplash
+- icons8
+- Audio Library — Music for content creators
