@@ -29,5 +29,5 @@ Flutter, Firebase
   <img src="https://user-images.githubusercontent.com/90912187/148486736-0848ad42-472f-4e5b-b091-b988c64fcea4.png" width="220" /> 
 </p>
 
-## Original
+## Original app
 [Google Play/Zing MP3](https://play.google.com/store/apps/details?id=com.zing.mp3)
