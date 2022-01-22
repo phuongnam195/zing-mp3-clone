@@ -2,6 +2,8 @@
 *NOTE: Actually, our project is only inspired by the original app, not clone.
 ## Team 13 - Introduction to Software Engineer course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
+## APK
+[ZingMP3_clone_210122.apk](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3_clone_210122.apk)
 ## Technologies
 Flutter, Firebase
 ## Screenshots
