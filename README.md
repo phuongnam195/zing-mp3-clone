@@ -2,8 +2,9 @@
 *NOTE: Actually, our project is only inspired by the original app, not clone.
 ## Team 13 - Introduction to Software Engineer course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
-## APK
-[ZingMP3_clone_210122.apk](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3_clone_210122.apk)
+## Demo
+- [APK](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3_clone_210122.apk)
+- [Video (Youtube)](https://youtu.be/19wmQFzO7ek)
 ## Screenshots
 <p float="left">
   <img src="https://user-images.githubusercontent.com/90912187/148486488-a7b134e4-4728-4384-8f9e-1ba8b82e7945.png" width="220" />
