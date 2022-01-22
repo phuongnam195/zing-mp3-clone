@@ -35,7 +35,6 @@ class RecentSearchProvider {
   // Nạp danh sách tìm kiếm gần đây
   Future<void> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _recentSearchMusicIDs.clear();
     _recentSearchMusicIDs =
         prefs.getStringList('recent_search_music_ids') ?? [];
   }

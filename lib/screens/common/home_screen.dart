@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../providers/music_provider.dart';
+import '../../providers/playing_log_provider.dart';
+import '../../providers/playlist_provider.dart';
+import '../../providers/ranked_music_provider.dart';
 import '../../utils/config.dart';
 import '../../controllers/player_controller.dart';
 import '../../pages/chart_page.dart';
@@ -11,6 +15,8 @@ import 'account_screen.dart';
 import 'search_screen.dart';
 import '../../widgets/common/playing_control_bar.dart';
 import '../../widgets/search/search_box.dart';
+
+bool isFetched = false;
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -24,7 +30,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var _currentPageIndex = 1;
   final PageController _pageController = PageController(initialPage: 1);
-
   final PlayerController playerController = PlayerController.instance;
 
   void _switchPage(int index) {
@@ -32,6 +37,24 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentPageIndex = index;
     });
     _pageController.jumpToPage(index);
+  }
+
+  Future<void> fetchData() async {
+    await MusicProvider.instance.fetchAndSetData();
+    await PlaylistProvider.instance.fetchAndSetData();
+    await PlayingLogProvider.instance.fetchAndSetData();
+    await RankedMusicProvider.instance.countAndSort();
+    setState(() {
+      isFetched = true;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!isFetched) {
+      fetchData();
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -66,21 +89,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).pushNamed(SearchScreen.routeName);
                     }),
               )),
-      body: PageView(
-        scrollDirection: Axis.horizontal,
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
-        },
-        children: const [
-          PersonalPage(),
-          ExplorerPage(),
-          ChartPage(),
-          RadioPage(),
-        ],
-      ),
+      body: isFetched
+          ? PageView(
+              scrollDirection: Axis.horizontal,
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+              children: const [
+                PersonalPage(),
+                ExplorerPage(),
+                ChartPage(),
+                RadioPage(),
+              ],
+            )
+          : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: StreamBuilder<void>(
           stream: PlayerController.instance.onMusicChanged,
           builder: (context, snapshot) {

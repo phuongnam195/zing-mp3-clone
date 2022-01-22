@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/explorer/all_playlists_screen.dart';
 import 'screens/admin/admin_screen.dart';
-import 'providers/ranked_music_provider.dart';
-import 'providers/music_provider.dart';
-import 'providers/playlist_provider.dart';
 import 'providers/recent_search_provider.dart';
-import 'providers/playing_log_provider.dart';
 import './screens/common/account_screen.dart';
 import './screens/auth/forgot_screen.dart';
 import './screens/auth/login_screen.dart';
@@ -25,15 +21,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  await MusicProvider.instance.fetchAndSetData();
-  await PlaylistProvider.instance.fetchAndSetData();
-  await PlayingLogProvider.instance.fetchAndSetData();
-  await RankedMusicProvider.instance.process();
+  // await MusicProvider.instance.fetchAndSetData();
+  // await PlaylistProvider.instance.fetchAndSetData();
+  // await PlayingLogProvider.instance.fetchAndSetData();
+  // await RankedMusicProvider.instance.countAndSort();
   if (FirebaseAuth.instance.currentUser != null) {
     await Config.instance.loadAccountData();
   }
   await RecentSearchProvider.instance.load();
-  // await DeviceMusicProvider.instance.scanAudioFiles();
 
   runApp(const MyApp());
 }
