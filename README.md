@@ -4,8 +4,6 @@
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## APK
 [ZingMP3_clone_210122.apk](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3_clone_210122.apk)
-## Technologies
-Flutter, Firebase
 ## Screenshots
 <p float="left">
   <img src="https://user-images.githubusercontent.com/90912187/148486488-a7b134e4-4728-4384-8f9e-1ba8b82e7945.png" width="220" />
@@ -30,6 +28,9 @@ Flutter, Firebase
   <img src="https://user-images.githubusercontent.com/90912187/148486672-500a35d1-87ee-4655-80be-d989f3c68cf7.png" width="220" /> 
   <img src="https://user-images.githubusercontent.com/90912187/148486736-0848ad42-472f-4e5b-b091-b988c64fcea4.png" width="220" /> 
 </p>
+
+## Technologies
+Flutter, Firebase
 
 ## Original app
 [Google Play/Zing MP3](https://play.google.com/store/apps/details?id=com.zing.mp3)
