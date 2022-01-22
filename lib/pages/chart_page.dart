@@ -51,7 +51,7 @@ class ChartPage extends StatelessWidget {
                     top: MediaQuery.of(context).padding.top, bottom: 20),
                 child: StreamBuilder<void>(
                     stream: chartController.onChartUpdate,
-                    builder: (ctx, _) {
+                    builder: (_, __) {
                       final List<Series<dynamic, num>> seriesList = [
                         for (var hourCounting
                             in chartController.currentChartData)

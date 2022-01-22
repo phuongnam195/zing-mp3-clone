@@ -25,8 +25,8 @@ class PlayingLogProvider {
 
       _list.clear();
       for (var qds in queryDocumentSnapshots) {
-        final music = PlayingLog.fromMap(qds.data(), qds.id);
-        _list.add(music);
+        final log = PlayingLog.fromMap(qds.data(), qds.id);
+        _list.add(log);
       }
     } catch (error) {
       print('<<Exception-AllPlayingLogs-fetchAndSetData>> ' + error.toString());

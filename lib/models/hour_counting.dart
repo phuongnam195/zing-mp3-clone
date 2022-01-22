@@ -38,7 +38,7 @@ class HourCounting {
     return result;
   }
 
-  void incListens(DateTime hour) {
+  void inc(DateTime hour) {
     _listens.update(hour, (value) => value + 1, ifAbsent: () => 0);
   }
 

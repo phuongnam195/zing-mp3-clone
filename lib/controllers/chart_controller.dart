@@ -73,11 +73,11 @@ class ChartController {
   void _addLog(PlayingLog log) {
     final logHour = MyDateTime.getToHour(log.datetime.toDate());
     if (MyDateTime.isToday(logHour)) {
-      if (logHour.isAfter(_firstHour)) {
+      if (logHour.difference(_firstHour).inSeconds >= 0) {
         if (!_allData.containsKey(log.musicID)) {
           _allData[log.musicID] = HourCounting(log.musicID, _firstHour);
         }
-        _allData[log.musicID]!.incListens(logHour);
+        _allData[log.musicID]!.inc(logHour);
       }
     }
   }

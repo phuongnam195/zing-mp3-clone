@@ -65,9 +65,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     const SizedBox(height: 5),
                     for (var music in recentList)
                       MusicCard(
-                          title: music.title,
-                          artists: music.artists,
-                          thumbnailUrl: music.thumbnailUrl)
+                        title: music.title,
+                        artists: music.artists,
+                        thumbnailUrl: music.thumbnailUrl,
+                        onTap: () {
+                          final controller = PlayerController.instance;
+                          controller.maximizeScreen(context);
+                          controller.setMusic(music);
+                          RecentSearchProvider.instance.add(music.id);
+                        },
+                      )
                   ],
                 )
               : ListView.builder(
@@ -80,9 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       thumbnailUrl: music.thumbnailUrl,
                       onTap: () {
                         final controller = PlayerController.instance;
-                        if (!controller.isActive) {
-                          controller.maximizeScreen(context);
-                        }
+                        controller.maximizeScreen(context);
                         controller.setMusic(music);
                         RecentSearchProvider.instance.add(music.id);
                       },

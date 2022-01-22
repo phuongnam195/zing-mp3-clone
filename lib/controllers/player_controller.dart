@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:zing_mp3_clone/providers/radio_provider.dart';
 
+import '../providers/radio_provider.dart';
 import '../providers/playing_log_provider.dart';
 import '../models/music.dart';
 import '../models/playlist.dart';
@@ -89,8 +89,8 @@ class PlayerController {
     }
 
     final initMusic = playlist.getMusicAtIndex(_currentIndex);
-    _play(initMusic);
     shuffleMode = shuffle;
+    _play(initMusic);
     notifyMusicChange();
   }
 
@@ -110,6 +110,7 @@ class PlayerController {
     final initMusic = musicList[_currentIndex];
     shuffleMode = shuffle;
     _play(initMusic);
+    notifyMusicChange();
   }
 
   void _play(Music music) {
