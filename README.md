@@ -36,4 +36,4 @@ Flutter, Firebase
 ## Resource
 - Unsplash
 - icons8
-- Audio Library — Music for content creators
+- Audio Library
