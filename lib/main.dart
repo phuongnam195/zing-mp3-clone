@@ -25,10 +25,6 @@ void main() async {
   // await PlaylistProvider.instance.fetchAndSetData();
   // await PlayingLogProvider.instance.fetchAndSetData();
   // await RankedMusicProvider.instance.countAndSort();
-  if (FirebaseAuth.instance.currentUser != null) {
-    await Config.instance.loadAccountData();
-  }
-  await RecentSearchProvider.instance.load();
 
   runApp(const MyApp());
 }
@@ -38,29 +34,46 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Zing MP3',
-        theme: ThemeData(
-          primaryColor: const Color(0xFF814C9E),
-          hintColor: const Color(0xFF797979),
-          fontFamily: 'Open Sans',
-        ),
-        debugShowCheckedModeBanner: false,
-        initialRoute: Config.instance.myAccount == null
-            ? WelcomeScreen.routeName
-            : HomeScreen.routeName,
-        routes: {
-          WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
-          LoginScreen.routeName: (ctx) => const LoginScreen(),
-          SignUpScreen.routeName: (ctx) => const SignUpScreen(),
-          ForgotScreen.routeName: (ctx) => const ForgotScreen(),
-          HomeScreen.routeName: (ctx) => const HomeScreen(),
-          AccountScreen.routeName: (ctx) => const AccountScreen(),
-          SearchScreen.routeName: (ctx) => const SearchScreen(),
-          PlayingScreen.routeName: (ctx) => const PlayingScreen(),
-          PlaylistScreen.routeName: (ctx) => const PlaylistScreen(),
-          AllPlaylistsScreen.routeName: (ctx) => const AllPlaylistsScreen(),
-          AdminScreen.routeName: (ctx) => const AdminScreen(),
+    Future<void> loadPreferences() async {
+      if (FirebaseAuth.instance.currentUser != null) {
+        await Config.instance.loadAccountData();
+      }
+      await RecentSearchProvider.instance.load();
+    }
+
+    return FutureBuilder(
+        future: loadPreferences(),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Align(
+                alignment: Alignment.topCenter,
+                child: LinearProgressIndicator());
+          }
+          return MaterialApp(
+              title: 'Zing MP3',
+              theme: ThemeData(
+                primaryColor: const Color(0xFF814C9E),
+                hintColor: const Color(0xFF797979),
+                fontFamily: 'Open Sans',
+              ),
+              debugShowCheckedModeBanner: false,
+              initialRoute: Config.instance.myAccount == null
+                  ? WelcomeScreen.routeName
+                  : HomeScreen.routeName,
+              routes: {
+                WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
+                LoginScreen.routeName: (ctx) => const LoginScreen(),
+                SignUpScreen.routeName: (ctx) => const SignUpScreen(),
+                ForgotScreen.routeName: (ctx) => const ForgotScreen(),
+                HomeScreen.routeName: (ctx) => const HomeScreen(),
+                AccountScreen.routeName: (ctx) => const AccountScreen(),
+                SearchScreen.routeName: (ctx) => const SearchScreen(),
+                PlayingScreen.routeName: (ctx) => const PlayingScreen(),
+                PlaylistScreen.routeName: (ctx) => const PlaylistScreen(),
+                AllPlaylistsScreen.routeName: (ctx) =>
+                    const AllPlaylistsScreen(),
+                AdminScreen.routeName: (ctx) => const AdminScreen(),
+              });
         });
   }
 }
