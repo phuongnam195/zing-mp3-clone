@@ -24,7 +24,6 @@ Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
   <img src="https://user-images.githubusercontent.com/90912187/148486666-9f8e10cc-126d-4eb2-aef6-89d2af51f3c3.png" width="220" />
   
   <img src="https://user-images.githubusercontent.com/90912187/148486672-500a35d1-87ee-4655-80be-d989f3c68cf7.png" width="220" />
-  <img src="https://user-images.githubusercontent.com/90912187/148486672-500a35d1-87ee-4655-80be-d989f3c68cf7.png" width="220" />
   <img src="https://user-images.githubusercontent.com/90912187/148486736-0848ad42-472f-4e5b-b091-b988c64fcea4.png" width="220" />
 </p>
 
