@@ -3,7 +3,7 @@
 ## Team 13 - Introduction to Software Engineer course
 Thanh Chau, Manh Khiem, Thanh My, Phuong Nam
 ## Demo
-- [APK](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3_clone_210122.apk)
+- [APK](https://github.com/phuongnam195/zing-mp3-clone/raw/main/apk/ZingMP3clone_armeabi_v7a.apk)
 - [Video (Youtube)](https://youtu.be/19wmQFzO7ek)
 ## Screenshots
 <p float="left">
